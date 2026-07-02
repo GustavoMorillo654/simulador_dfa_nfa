@@ -26,7 +26,7 @@ Una herramienta web interactiva construida en un solo archivo HTML para el dise�
 
 ## 🚀 Cómo usarlo
 
-1. Descarga el archivo `automata-simulator.html`.
+1. Descarga el archivo `index.html`.
 2. Ábrelo en cualquier navegador moderno.
 3. ¡Crea y simula tus autómatas!
 
@@ -42,11 +42,3 @@ Una herramienta web interactiva construida en un solo archivo HTML para el dise�
 ---
 *Hecho para facilitar el aprendizaje de Compiladores e Intérpretes.*
 ```eof
-
-### ¿Cómo mejorarlo visualmente dentro de GitHub?
-*   **Usa `#` solo para el Título Principal.**
-*   **Usa `##` para las secciones.**
-*   **Usa `---`** para crear líneas divisorias (esto ayuda muchísimo a separar los bloques y que no se vea todo amontonado).
-*   **Usa bloques de cita `>`** para resaltar el link de Vercel.
-
-Esto es lo máximo que permite GitHub para mantener un estilo ordenado. ¡Pruébalo y verás que al renderizarse se verá mucho más limpio! ¿Necesitas que ajustemos alguna sección de texto?
