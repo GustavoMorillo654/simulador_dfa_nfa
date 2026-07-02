@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador DFA/NFA Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; 
+        }
+        canvas {
+            touch-action: none; 
+            outline: none;
+        }
+        .tool-btn.active {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+        }
+        .dark .tool-btn.active {
+            background-color: #1e3a8a;
+            border-color: #3b82f6;
+            color: #bfdbfe;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .cursor-grab { cursor: grab !important; }
+        .cursor-grabbing { cursor: grabbing !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-200">
+
+<div id="app" class="flex flex-col md:flex-row h-screen w-full">
+    <!-- Sidebar -->
+    <div class="w-full md:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col shadow-lg z-10 transition-colors duration-200 overflow-y-auto">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Simulador Pro
+                </h1>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">DFA/NFA + Archivos & Layout</p>
+            </div>
+            <button id="btnThemeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" title="Alternar Modo Oscuro">
+                <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+        </div>
+
+        <div class="p-4 flex-1 flex flex-col gap-4">
+            <!-- Herramientas -->
+            <div>
+                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Herramientas</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="tool-btn active flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="MOVE">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                        Mover
+                    </button>
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="ADD_STATE">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Estado
+                    </button>
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="ADD_TRANSITION">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        Transición
+                    </button>
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors text-sm font-medium" data-mode="DELETE">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Archivo & Exportación -->
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Archivo & Exportación</h2>
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                    <button id="btnSaveJson" class="py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-xs font-medium shadow-sm border border-slate-200 dark:border-slate-600">
+                        Guardar (.json)
+                    </button>
+                    <input type="file" id="fileLoadInput" accept=".json" class="hidden">
+                    <button id="btnLoadJson" class="py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-xs font-medium shadow-sm border border-slate-200 dark:border-slate-600">
+                        Cargar (.json)
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="btnExportCanvas" class="py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors text-xs font-medium shadow-sm">
+                        Exportar Autómata
+                    </button>
+                    <button id="btnExportTable" class="py-1.5 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 rounded hover:bg-rose-200 dark:hover:bg-rose-900/50 transition-colors text-xs font-medium shadow-sm">
+                        Exportar Tabla
+                    </button>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Acciones</h2>
+                <div class="flex flex-col gap-2">
+                    <button id="btnAutoLayout" class="w-full py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                        Reorganización Automática
+                    </button>
+                    <button id="btnShowTable" class="w-full py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        Panel de Análisis
+                    </button>
+                    <button id="btnDeterminize" class="w-full py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Determinizar (NFA → DFA)
+                    </button>
+                    <div class="flex justify-between items-center mt-1">
+                        <button id="btnClearAll" class="py-1 text-xs text-slate-400 dark:text-slate-500 hover:text-red-500 transition-colors">Limpiar todo</button>
+                        <button id="btnCenterView" class="py-1 text-xs text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-colors">Centrar Vista</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga por Texto -->
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Carga Rápida</h2>
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="textLoadInput" class="w-full px-2 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono dark:text-white" placeholder="Ej: iq0-a.b-fq1">
+                    <button id="btnTextLoad" class="w-full py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Generar Autómata
+                    </button>
+                </div>
+            </div>
+
+            <!-- Propiedades del Estado Seleccionado -->
+            <div id="statePropertiesPanel" class="hidden bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h2 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Propiedades</h2>
+                <div class="flex flex-col gap-2">
+                    <div>
+                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Nombre / Etiqueta</label>
+                        <input type="text" id="stateLabelInput" class="w-full px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                    </div>
+                    <div class="flex items-center gap-4 mt-1">
+                        <label class="flex items-center gap-1.5 text-sm cursor-pointer dark:text-slate-300">
+                            <input type="checkbox" id="isInitialCheckbox" class="w-4 h-4 text-blue-600 bg-white dark:bg-slate-800 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500">
+                            Inicial
+                        </label>
+                        <label class="flex items-center gap-1.5 text-sm cursor-pointer dark:text-slate-300">
+                            <input type="checkbox" id="isFinalCheckbox" class="w-4 h-4 text-blue-600 bg-white dark:bg-slate-800 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500">
+                            Final
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulador -->
+            <div class="mt-auto pb-4">
+                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Simulación</h2>
+                <div class="bg-blue-50 dark:bg-slate-900/80 p-3 rounded-lg border border-blue-100 dark:border-slate-700">
+                    <label class="block text-xs font-semibold text-blue-800 dark:text-blue-400 mb-1">Cadena a evaluar:</label>
+                    <input type="text" id="simInput" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-600 rounded shadow-inner mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm dark:text-white" placeholder="Ej: aabb">
+                    
+                    <div id="simDisplay" class="hidden w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-600 rounded mb-3 font-mono text-lg tracking-widest text-center overflow-x-auto whitespace-nowrap dark:text-white"></div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btnSimStep" class="py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm">
+                            Paso a Paso
+                        </button>
+                        <button id="btnSimFull" class="py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors text-sm font-medium shadow-sm">
+                            Evaluar Todo
+                        </button>
+                    </div>
+                    <button id="btnSimReset" class="hidden mt-2 w-full py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-sm font-medium">
+                        Reiniciar Simulación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas Area -->
+    <div class="flex-1 relative overflow-hidden bg-slate-50 dark:bg-slate-900 cursor-crosshair transition-colors duration-200" id="canvasContainer">
+        <canvas id="automatonCanvas" class="absolute inset-0 w-full h-full" tabindex="0"></canvas>
+        <div class="absolute bottom-4 left-4 text-[11px] text-slate-500 dark:text-slate-400 bg-white/90 dark:bg-slate-800/90 px-3 py-2 rounded shadow-sm backdrop-blur pointer-events-none border border-slate-200 dark:border-slate-700 leading-relaxed">
+            <strong>Atajos:</strong><br>
+            • <code>Ctrl+Z</code> / <code>Ctrl+Y</code>: Deshacer/Rehacer<br>
+            • <code>Rueda Mouse</code>: Zoom In/Out<br>
+            • <code>Espacio + Drag</code> / <code>Clic Medio</code>: Mover Lienzo<br>
+            • <code>Clic Derecho</code> en transición: Editar
+        </div>
+    </div>
+</div>
+
+<!-- Modal Transición -->
+<div id="transitionModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-[60]">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl w-80 transform transition-all border border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2" id="transModalTitle">Símbolo(s) de Transición</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Separa múltiples símbolos con comas (Ej: a, b). Vacío para eliminar.</p>
+        <input type="text" id="transSymbolInput" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 p-2 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono dark:text-white" placeholder="Símbolo" autocomplete="off">
+        <div class="flex justify-between items-center">
+            <button id="btnEpsilon" class="text-sm text-blue-600 dark:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded transition-colors">Añadir ε</button>
+            <div class="flex gap-2">
+                <button id="btnCancelTrans" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancelar</button>
+                <button id="btnSaveTrans" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalles de Simulación -->
+<div id="simDetailModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col transform transition-all border border-slate-200 dark:border-slate-700">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white">Detalle de Simulación</h3>
+                <p id="simDetailStatus" class="text-xs font-semibold mt-1 uppercase"></p>
+            </div>
+            <button id="btnCloseDetailModal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="p-4 overflow-auto flex-1 bg-slate-50 dark:bg-slate-900">
+            <table class="w-full text-sm text-left text-slate-600 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 sticky top-0">
+                    <tr>
+                        <th class="px-4 py-2">Paso</th>
+                        <th class="px-4 py-2 text-center">Símbolo</th>
+                        <th class="px-4 py-2">Estado(s) Actual(es)</th>
+                    </tr>
+                </thead>
+                <tbody id="simDetailContent">
+                    <!-- Filas dinámicas -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Sidepanel Tabla de Transiciones e Historial -->
+<div id="tableSidepanel" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-white dark:bg-slate-800 shadow-2xl z-40 transform transition-transform duration-300 translate-x-full border-l border-slate-200 dark:border-slate-700 flex flex-col">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Panel de Análisis</h3>
+        <button id="btnCloseTable" class="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-200 dark:hover:text-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+    
+    <div class="flex-1 flex flex-col min-h-0">
+        <!-- Tabla de Transiciones (Arriba) -->
+        <div class="flex-1 overflow-auto bg-white dark:bg-slate-800 flex flex-col">
+            <!-- WRAPPER PARA EXPORTAR -->
+            <div id="tableExportWrapper" class="bg-white dark:bg-slate-800 w-full h-full flex flex-col">
+                <div class="p-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 sticky top-0 z-10">
+                    <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Tabla de Transiciones</h4>
+                </div>
+                <div class="p-4 overflow-x-auto flex-1" id="tableContent">
+                    <!-- La tabla se generará aquí -->
+                </div>
+                <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50">
+                    <strong>Leyenda:</strong> '→' Inicial | '*' Final | '∅' Vacía
+                </div>
+            </div>
+        </div>
+        
+        <!-- Historial de Simulación (Abajo) -->
+        <div class="h-1/3 min-h-[250px] border-t-4 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex flex-col">
+            <div class="p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex justify-between items-center sticky top-0">
+                <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Historial (Doble Clic para detalle)</h4>
+                <button id="btnClearHistory" class="text-xs text-slate-500 hover:text-red-500 transition-colors">Limpiar</button>
+            </div>
+            <ul id="simHistoryList" class="flex-1 overflow-y-auto p-3 space-y-2">
+                <li class="text-xs text-slate-400 dark:text-slate-500 text-center py-4 italic" id="emptyHistoryMsg">No hay simulaciones recientes.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notificaciones -->
+<div id="toast" class="fixed top-4 right-4 px-6 py-3 rounded-lg shadow-xl text-white font-medium transition-all duration-300 opacity-0 pointer-events-none z-50 transform translate-y-[-10px]">
+    Mensaje
+</div>
+
+<script>
+    // --- Variables and Core Structures ---
+    class AutomatonState {
+        constructor(id, x, y) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+            this.label = `q${id}`;
+            this.isInitial = false;
+            this.isFinal = false;
+            this.radius = 28;
+        }
+    }
+
+    class AutomatonTransition {
+        constructor(fromState, toState, symbols) {
+            this.from = fromState;
+            this.to = toState;
+            this.symbols = symbols; 
+            this.textPos = {x: 0, y: 0}; // For hit detection
+        }
+    }
+
+    let states = [];
+    let transitions = [];
+    let nextStateId = 0;
+
+    let currentMode = 'MOVE'; 
+    let selectedStates = []; 
+    let selectedState = null; 
+    let isDraggingMulti = false;
+    let lastMousePos = {x:0, y:0};
+    let selectionBox = {active: false, startX: 0, startY: 0, endX: 0, endY: 0};
+    
+    let transitionStartNode = null;
+    let currentMousePos = {x:0, y:0};
+
+    // Camera Transform (Pan & Zoom)
+    let transform = { scale: 1, offsetX: 0, offsetY: 0 };
+    let isPanning = false;
+    let panStart = { x: 0, y: 0 };
+    let spacePressed = false;
+
+    // Undo / Redo Stacks
+    let undoStack = [];
+    let redoStack = [];
+
+    // Simulation
+    let isSimulating = false;
+    let simString = "";
+    let simIndex = 0;
+    let simActiveStates = new Set();
+    let simStatus = 'IDLE'; 
+    let currentSimLog = []; 
+
+    // DOM Elements
+    const canvas = document.getElementById('automatonCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('canvasContainer');
+    
+    const statePropsPanel = document.getElementById('statePropertiesPanel');
+    const stateLabelInput = document.getElementById('stateLabelInput');
+    const isInitialCheckbox = document.getElementById('isInitialCheckbox');
+    const isFinalCheckbox = document.getElementById('isFinalCheckbox');
+    
+    const simInput = document.getElementById('simInput');
+    const simDisplay = document.getElementById('simDisplay');
+    const btnSimStep = document.getElementById('btnSimStep');
+    const btnSimFull = document.getElementById('btnSimFull');
+    const btnSimReset = document.getElementById('btnSimReset');
+    
+    const transModal = document.getElementById('transitionModal');
+    const transInput = document.getElementById('transSymbolInput');
+    const transModalTitle = document.getElementById('transModalTitle');
+    
+    const tableSidepanel = document.getElementById('tableSidepanel');
+    const simDetailModal = document.getElementById('simDetailModal');
+
+    let pendingTransition = null;
+
+    // --- History Management (Undo/Redo) ---
+    function saveHistoryState() {
+        const stateSnapshot = {
+            states: states.map(s => ({...s})),
+            transitions: transitions.map(t => ({fromId: t.from.id, toId: t.to.id, symbols: [...t.symbols]})),
+            nextStateId: nextStateId
+        };
+        undoStack.push(JSON.stringify(stateSnapshot));
+        redoStack = []; 
+        if(undoStack.length > 50) undoStack.shift(); 
+    }
+
+    function restoreHistoryState(snapshotStr) {
+        const snapshot = JSON.parse(snapshotStr);
+        states = snapshot.states.map(s => {
+            let ns = new AutomatonState(s.id, s.x, s.y);
+            ns.label = s.label;
+            ns.isInitial = s.isInitial;
+            ns.isFinal = s.isFinal;
+            ns.radius = s.radius;
+            return ns;
+        });
+        transitions = snapshot.transitions.map(t => {
+            let fromState = states.find(s => s.id === t.fromId);
+            let toState = states.find(s => s.id === t.toId);
+            return new AutomatonTransition(fromState, toState, t.symbols);
+        });
+        nextStateId = snapshot.nextStateId;
+        selectedStates = [];
+        updatePropsPanel();
+        draw();
+        if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+    }
+
+    function undo() {
+        if(undoStack.length === 0 || isSimulating) return;
+        const currentState = {
+            states: states.map(s => ({...s})),
+            transitions: transitions.map(t => ({fromId: t.from.id, toId: t.to.id, symbols: [...t.symbols]})),
+            nextStateId: nextStateId
+        };
+        redoStack.push(JSON.stringify(currentState));
+        const prevState = undoStack.pop();
+        restoreHistoryState(prevState);
+        showToast("Deshacer (Undo)", "info");
+    }
+
+    function redo() {
+        if(redoStack.length === 0 || isSimulating) return;
+        const currentState = {
+            states: states.map(s => ({...s})),
+            transitions: transitions.map(t => ({fromId: t.from.id, toId: t.to.id, symbols: [...t.symbols]})),
+            nextStateId: nextStateId
+        };
+        undoStack.push(JSON.stringify(currentState));
+        const nextState = redoStack.pop();
+        restoreHistoryState(nextState);
+        showToast("Rehacer (Redo)", "info");
+    }
+
+    window.addEventListener('keydown', (e) => {
+        // Space for panning
+        if (e.code === 'Space' && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            spacePressed = true;
+            container.classList.add('cursor-grab');
+            container.classList.remove('cursor-crosshair', 'cursor-default');
+        }
+        // Undo / Redo
+        if(e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); }
+        if(e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (e.code === 'Space') {
+            spacePressed = false;
+            isPanning = false;
+            container.classList.remove('cursor-grab', 'cursor-grabbing');
+            container.style.cursor = currentMode === 'MOVE' ? 'default' : 'crosshair';
+        }
+    });
+
+    // --- Themes ---
+    const btnThemeToggle = document.getElementById('btnThemeToggle');
+    function toggleTheme() {
+        document.documentElement.classList.toggle('dark');
+        draw(); 
+    }
+    btnThemeToggle.addEventListener('click', toggleTheme);
+    function isDarkMode() { return document.documentElement.classList.contains('dark'); }
+
+    // --- Utilities & Canvas Management ---
+    function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = container.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function getMousePos(e) {
+        const rect = container.getBoundingClientRect();
+        let clientX = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
+        let clientY = e.clientY ?? (e.touches ? e.touches[0].clientY : 0);
+        
+        let x = (clientX - rect.left - transform.offsetX) / transform.scale;
+        let y = (clientY - rect.top - transform.offsetY) / transform.scale;
+        return { x, y };
+    }
+
+    function getStateAt(x, y) {
+        for (let i = states.length - 1; i >= 0; i--) {
+            const s = states[i];
+            const dx = s.x - x;
+            const dy = s.y - y;
+            if (dx*dx + dy*dy <= s.radius*s.radius) return s;
+        }
+        return null;
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-xl text-white font-medium transition-all duration-300 z-[100] transform translate-y-0 opacity-100 ${
+            type === 'error' ? 'bg-red-500' : 
+            (type === 'success' ? 'bg-emerald-500' : (type==='warning' ? 'bg-purple-500' : 'bg-blue-500'))
+        }`;
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+        }, 3000);
+    }
+
+    // --- Archivos & Exportación ---
+    
+    // Save to JSON
+    document.getElementById('btnSaveJson').addEventListener('click', () => {
+        const data = {
+            states: states.map(s => ({id: s.id, x: s.x, y: s.y, label: s.label, isInitial: s.isInitial, isFinal: s.isFinal, radius: s.radius})),
+            transitions: transitions.map(t => ({from: t.from.id, to: t.to.id, symbols: t.symbols}))
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'automata.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Autómata guardado (.json)", "success");
+    });
+
+    // Load from JSON
+    const fileLoadInput = document.getElementById('fileLoadInput');
+    document.getElementById('btnLoadJson').addEventListener('click', () => {
+        fileLoadInput.click();
+    });
+    fileLoadInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                saveHistoryState(); // Save current state before overriding
+                
+                states = data.states.map(s => {
+                    let st = new AutomatonState(s.id, s.x, s.y);
+                    st.label = s.label;
+                    st.isInitial = s.isInitial;
+                    st.isFinal = s.isFinal;
+                    st.radius = s.radius;
+                    return st;
+                });
+                
+                transitions = data.transitions.map(t => {
+                    let from = states.find(s => s.id === t.from);
+                    let to = states.find(s => s.id === t.to);
+                    return new AutomatonTransition(from, to, t.symbols);
+                });
+                
+                nextStateId = Math.max(...states.map(s => s.id)) + 1;
+                if (!isFinite(nextStateId)) nextStateId = 0;
+                
+                selectedStates = [];
+                updatePropsPanel();
+                transform = { scale: 1, offsetX: 0, offsetY: 0 }; // Reset view
+                draw();
+                showToast("Autómata cargado exitosamente", "success");
+                if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+            } catch(err) {
+                showToast("Error al cargar el archivo JSON", "error");
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // Reset input
+    });
+
+    // Export Canvas to PNG
+    document.getElementById('btnExportCanvas').addEventListener('click', () => {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tCtx = tempCanvas.getContext('2d');
+        
+        // Fill background based on theme
+        tCtx.fillStyle = isDarkMode() ? '#0f172a' : '#f8fafc'; 
+        tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        
+        // Draw the current canvas over it
+        tCtx.drawImage(canvas, 0, 0);
+        
+        const a = document.createElement('a');
+        a.href = tempCanvas.toDataURL('image/png');
+        a.download = 'automata_grafo.png';
+        a.click();
+        showToast("Grafo exportado (PNG)", "success");
+    });
+
+    // Export Table to PNG (Fixing scroll clipping)
+    document.getElementById('btnExportTable').addEventListener('click', () => {
+        if (states.length === 0) {
+            showToast("La tabla está vacía", "warning");
+            return;
+        }
+        
+        // Always generate freshest table in background
+        generateTransitionTable();
+        
+        const wrapper = document.getElementById('tableExportWrapper');
+        
+        // Create an exact clone of the wrapper
+        const clone = wrapper.cloneNode(true);
+        
+        // Override styles to force full height rendering without scroll
+        clone.style.position = 'absolute';
+        clone.style.left = '-9999px'; // Move off-screen
+        clone.style.top = '0';
+        clone.style.width = '800px';  // Fixed width for good formatting
+        clone.style.height = 'auto';  // Let it grow vertically
+        clone.style.overflow = 'visible'; // NO scroll
+        clone.style.background = isDarkMode() ? '#1e293b' : '#ffffff';
+        clone.style.color = isDarkMode() ? '#e2e8f0' : '#1e293b';
+        clone.style.padding = '20px';
+        
+        document.body.appendChild(clone);
+        
+        // Use html2canvas on the unconstrained clone
+        html2canvas(clone, {
+            backgroundColor: isDarkMode() ? '#1e293b' : '#ffffff',
+            scale: 2 // High resolution
+        }).then(canvasOutput => {
+            const a = document.createElement('a');
+            a.href = canvasOutput.toDataURL('image/png');
+            a.download = 'tabla_transiciones.png';
+            a.click();
+            
+            // Clean up
+            document.body.removeChild(clone);
+            showToast("Tabla exportada (PNG)", "success");
+        }).catch(err => {
+            document.body.removeChild(clone);
+            showToast("Error al exportar la tabla", "error");
+        });
+    });
+
+
+    // --- Drawing Engine ---
+    function drawArrowHead(x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-10, -5);
+        ctx.lineTo(-10, 5);
+        ctx.closePath();
+        ctx.fillStyle = isDarkMode() ? '#94a3b8' : '#334155';
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function drawSelfLoop(t) {
+        const state = t.from;
+        const symbols = t.symbols;
+        const r = state.radius;
+        const loopRadius = 22;
+        const centerX = state.x;
+        const centerY = state.y - r - loopRadius + 8;
+        const dark = isDarkMode();
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, loopRadius, 0, 2*Math.PI);
+        ctx.strokeStyle = dark ? '#64748b' : '#64748b';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        const angleOnCircle = -Math.PI / 4;
+        const arrowX = state.x + Math.cos(angleOnCircle) * r;
+        const arrowY = state.y + Math.sin(angleOnCircle) * r;
+        drawArrowHead(arrowX, arrowY, Math.PI / 3); 
+        
+        const textStr = symbols.join(', ');
+        ctx.font = '500 13px Inter';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        
+        const metrics = ctx.measureText(textStr);
+        ctx.fillStyle = dark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255,255,255,0.85)';
+        
+        const finalTx = centerX;
+        const finalTy = centerY - loopRadius - 2;
+        t.textPos = {x: finalTx, y: finalTy - 8}; 
+
+        ctx.fillRect(finalTx - metrics.width/2 - 2, finalTy - 16, metrics.width + 4, 18);
+        ctx.fillStyle = dark ? '#e2e8f0' : '#1e293b';
+        ctx.fillText(textStr, finalTx, finalTy);
+    }
+
+    function drawArrow(t, curved) {
+        const stateA = t.from;
+        const stateB = t.to;
+        const symbols = t.symbols;
+
+        const dx = stateB.x - stateA.x;
+        const dy = stateB.y - stateA.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist === 0) return;
+
+        const angle = Math.atan2(dy, dx);
+        const r = stateA.radius; 
+        
+        let startX = stateA.x + Math.cos(angle) * r;
+        let startY = stateA.y + Math.sin(angle) * r;
+        let endX = stateB.x - Math.cos(angle) * r;
+        let endY = stateB.y - Math.sin(angle) * r;
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        
+        let controlX, controlY;
+        let arrowAngle = angle;
+
+        if (curved) {
+            const offset = 35; 
+            const nx = -dy / dist;
+            const ny = dx / dist;
+            const midX = (stateA.x + stateB.x) / 2;
+            const midY = (stateA.y + stateB.y) / 2;
+            controlX = midX + nx * offset;
+            controlY = midY + ny * offset;
+            
+            const angleA = Math.atan2(controlY - stateA.y, controlX - stateA.x);
+            const angleB = Math.atan2(stateB.y - controlY, stateB.x - controlX);
+            
+            startX = stateA.x + Math.cos(angleA) * r;
+            startY = stateA.y + Math.sin(angleA) * r;
+            endX = stateB.x - Math.cos(angleB) * r;
+            endY = stateB.y - Math.sin(angleB) * r;
+
+            ctx.moveTo(startX, startY);
+            ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+            arrowAngle = Math.atan2(endY - controlY, endX - controlX);
+        } else {
+            ctx.lineTo(endX, endY);
+        }
+        
+        const dark = isDarkMode();
+        ctx.strokeStyle = dark ? '#64748b' : '#64748b';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        drawArrowHead(endX, endY, arrowAngle);
+        
+        let textX, textY;
+        if (curved) {
+            textX = 0.25 * startX + 0.5 * controlX + 0.25 * endX;
+            textY = 0.25 * startY + 0.5 * controlY + 0.25 * endY;
+        } else {
+            textX = (startX + endX) / 2;
+            textY = (startY + endY) / 2;
+        }
+        
+        const textOffset = 12;
+        const tnx = -Math.sin(arrowAngle);
+        const tny = Math.cos(arrowAngle);
+        
+        const textStr = symbols.join(', ');
+        ctx.font = '500 13px Inter';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const finalTx = textX + tnx * textOffset;
+        const finalTy = textY + tny * textOffset;
+        t.textPos = {x: finalTx, y: finalTy}; 
+
+        const metrics = ctx.measureText(textStr);
+        ctx.fillStyle = dark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(248, 250, 252, 0.9)'; 
+        ctx.fillRect(finalTx - metrics.width/2 - 4, finalTy - 10, metrics.width + 8, 20);
+        
+        ctx.fillStyle = dark ? '#e2e8f0' : '#1e293b';
+        ctx.fillText(textStr, finalTx, finalTy);
+    }
+
+    function drawState(state) {
+        const dark = isDarkMode();
+        const isSimActive = isSimulating && simActiveStates.has(state);
+        
+        ctx.beginPath();
+        ctx.arc(state.x, state.y, state.radius, 0, 2*Math.PI);
+        
+        if (isSimActive) {
+            ctx.fillStyle = dark ? '#064e3b' : '#bbf7d0'; 
+            ctx.strokeStyle = dark ? '#34d399' : '#166534'; 
+        } else if (selectedStates.includes(state)) {
+            ctx.fillStyle = dark ? '#1e3a8a' : '#eff6ff'; 
+            ctx.strokeStyle = dark ? '#60a5fa' : '#2563eb'; 
+        } else {
+            ctx.fillStyle = dark ? '#1e293b' : '#ffffff';
+            ctx.strokeStyle = dark ? '#94a3b8' : '#334155'; 
+        }
+        
+        ctx.lineWidth = selectedStates.includes(state) || isSimActive ? 3 : 2;
+        ctx.fill();
+        ctx.stroke();
+
+        if (state.isFinal) {
+            ctx.beginPath();
+            ctx.arc(state.x, state.y, state.radius - 5, 0, 2*Math.PI);
+            ctx.stroke();
+        }
+
+        if (state.isInitial) {
+            const startX = state.x - state.radius - 25;
+            const startY = state.y;
+            const endX = state.x - state.radius;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, startY);
+            ctx.strokeStyle = dark ? '#94a3b8' : '#334155';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            drawArrowHead(endX, startY, 0);
+        }
+
+        ctx.fillStyle = isSimActive ? (dark ? '#a7f3d0' : '#166534') : (dark ? '#f8fafc' : '#0f172a');
+        ctx.font = '600 14px Inter';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(state.label, state.x, state.y);
+    }
+
+    function draw() {
+        const rect = container.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        
+        // Reset transform to clear the entire canvas
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Apply Pan & Zoom transformations
+        ctx.setTransform(transform.scale * dpr, 0, 0, transform.scale * dpr, transform.offsetX * dpr, transform.offsetY * dpr);
+
+        for (let t of transitions) {
+            if (t.from === t.to) {
+                drawSelfLoop(t);
+            } else {
+                let hasReverse = transitions.some(tr => tr.from === t.to && tr.to === t.from);
+                drawArrow(t, hasReverse);
+            }
+        }
+
+        if (currentMode === 'ADD_TRANSITION' && transitionStartNode && currentMousePos) {
+            ctx.beginPath();
+            ctx.moveTo(transitionStartNode.x, transitionStartNode.y);
+            ctx.lineTo(currentMousePos.x, currentMousePos.y);
+            ctx.strokeStyle = isDarkMode() ? '#64748b' : '#94a3b8'; 
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        for (let s of states) {
+            drawState(s);
+        }
+
+        // Draw Selection Box
+        if (selectionBox.active) {
+            ctx.fillStyle = isDarkMode() ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)';
+            ctx.strokeStyle = isDarkMode() ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 0.8)';
+            ctx.lineWidth = 1 / transform.scale; 
+            ctx.setLineDash([5 / transform.scale, 5 / transform.scale]);
+            let x = Math.min(selectionBox.startX, selectionBox.endX);
+            let y = Math.min(selectionBox.startY, selectionBox.endY);
+            let w = Math.abs(selectionBox.startX - selectionBox.endX);
+            let h = Math.abs(selectionBox.startY - selectionBox.endY);
+            ctx.fillRect(x, y, w, h);
+            ctx.strokeRect(x, y, w, h);
+            ctx.setLineDash([]);
+        }
+    }
+
+    // --- Pan & Zoom Events ---
+    container.addEventListener('wheel', (e) => {
+        if (isSimulating) return;
+        e.preventDefault();
+        const zoomIntensity = 0.1;
+        const wheel = e.deltaY < 0 ? 1 : -1;
+        const zoomFactor = Math.exp(wheel * zoomIntensity);
+        
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        transform.offsetX = mouseX - (mouseX - transform.offsetX) * zoomFactor;
+        transform.offsetY = mouseY - (mouseY - transform.offsetY) * zoomFactor;
+        transform.scale *= zoomFactor;
+        
+        // Limits
+        transform.scale = Math.max(0.2, Math.min(transform.scale, 5));
+        draw();
+    });
+
+    document.getElementById('btnCenterView').addEventListener('click', () => {
+        transform = { scale: 1, offsetX: 0, offsetY: 0 };
+        draw();
+    });
+
+    // --- Interactive Events ---
+    function updatePropsPanel() {
+        if (selectedStates.length === 1) {
+            selectedState = selectedStates[0];
+            statePropsPanel.classList.remove('hidden');
+            stateLabelInput.value = selectedState.label;
+            isInitialCheckbox.checked = selectedState.isInitial;
+            isFinalCheckbox.checked = selectedState.isFinal;
+        } else {
+            selectedState = null;
+            statePropsPanel.classList.add('hidden');
+        }
+    }
+
+    container.addEventListener('mousedown', handlePointerDown);
+    container.addEventListener('touchstart', handlePointerDown, {passive: false});
+
+    function handlePointerDown(e) {
+        if (isSimulating) return;
+        if (e.button === 2) return; 
+        if (e.type === 'touchstart') e.preventDefault(); 
+        
+        // Handle Panning
+        if (e.button === 1 || spacePressed) {
+            isPanning = true;
+            panStart = { x: e.clientX, y: e.clientY };
+            container.classList.add('cursor-grabbing');
+            return;
+        }
+        
+        const pos = getMousePos(e);
+        const clickedState = getStateAt(pos.x, pos.y);
+
+        if (currentMode === 'MOVE') {
+            if (clickedState) {
+                if (!selectedStates.includes(clickedState)) {
+                    selectedStates = [clickedState];
+                }
+                saveHistoryState();
+                isDraggingMulti = true;
+                lastMousePos = pos;
+                updatePropsPanel();
+            } else {
+                selectedStates = [];
+                selectionBox.active = true;
+                selectionBox.startX = pos.x;
+                selectionBox.startY = pos.y;
+                selectionBox.endX = pos.x;
+                selectionBox.endY = pos.y;
+                updatePropsPanel();
+            }
+        } else if (currentMode === 'ADD_STATE') {
+            if (!clickedState) {
+                saveHistoryState();
+                const newState = new AutomatonState(nextStateId++, pos.x, pos.y);
+                if (states.length === 0) newState.isInitial = true; 
+                states.push(newState);
+                selectedStates = [newState];
+                updatePropsPanel();
+            }
+        } else if (currentMode === 'ADD_TRANSITION') {
+            if (clickedState) {
+                transitionStartNode = clickedState;
+                currentMousePos = pos;
+            }
+        } else if (currentMode === 'DELETE') {
+            if (clickedState) {
+                saveHistoryState();
+                states = states.filter(s => s !== clickedState);
+                transitions = transitions.filter(t => t.from !== clickedState && t.to !== clickedState);
+                selectedStates = selectedStates.filter(s => s !== clickedState);
+                updatePropsPanel();
+            }
+        }
+        draw();
+    }
+
+    container.addEventListener('mousemove', handlePointerMove);
+    container.addEventListener('touchmove', handlePointerMove, {passive: false});
+
+    function handlePointerMove(e) {
+        if (isSimulating) return;
+        if (e.type === 'touchmove') e.preventDefault();
+        
+        if (isPanning) {
+            transform.offsetX += (e.clientX - panStart.x);
+            transform.offsetY += (e.clientY - panStart.y);
+            panStart = { x: e.clientX, y: e.clientY };
+            draw();
+            return;
+        }
+
+        currentMousePos = getMousePos(e);
+
+        if (currentMode === 'MOVE') {
+            if (isDraggingMulti) {
+                let dx = currentMousePos.x - lastMousePos.x;
+                let dy = currentMousePos.y - lastMousePos.y;
+                selectedStates.forEach(s => {
+                    s.x += dx;
+                    s.y += dy;
+                });
+                lastMousePos = currentMousePos;
+                draw();
+            } else if (selectionBox.active) {
+                selectionBox.endX = currentMousePos.x;
+                selectionBox.endY = currentMousePos.y;
+                
+                let minX = Math.min(selectionBox.startX, selectionBox.endX);
+                let maxX = Math.max(selectionBox.startX, selectionBox.endX);
+                let minY = Math.min(selectionBox.startY, selectionBox.endY);
+                let maxY = Math.max(selectionBox.startY, selectionBox.endY);
+                
+                selectedStates = states.filter(s => 
+                    s.x >= minX && s.x <= maxX && s.y >= minY && s.y <= maxY
+                );
+                updatePropsPanel();
+                draw();
+            }
+        } else if (transitionStartNode) {
+            draw();
+        }
+    }
+
+    window.addEventListener('mouseup', handlePointerUp);
+    window.addEventListener('touchend', handlePointerUp);
+
+    function handlePointerUp(e) {
+        if (isPanning) {
+            isPanning = false;
+            container.classList.remove('cursor-grabbing');
+            if(!spacePressed) container.classList.remove('cursor-grab');
+            return;
+        }
+
+        if (e.button === 2) return;
+        
+        if (currentMode === 'MOVE') {
+            isDraggingMulti = false;
+            if (selectionBox.active) {
+                selectionBox.active = false;
+                updatePropsPanel();
+                draw();
+            }
+        } else if (transitionStartNode) {
+            const pos = getMousePos(e);
+            const targetState = getStateAt(pos.x, pos.y);
+            
+            if (targetState) {
+                pendingTransition = { from: transitionStartNode, to: targetState, isEdit: false };
+                transModalTitle.textContent = "Nueva Transición";
+                transModal.classList.remove('hidden');
+                setTimeout(() => transInput.focus(), 50);
+            }
+            transitionStartNode = null;
+            draw();
+        }
+    }
+
+    // Right Click to Edit Transition
+    container.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        if (isSimulating || isPanning || spacePressed) return;
+
+        const pos = getMousePos(e);
+        let clickedTransition = null;
+
+        for (let t of transitions) {
+            if (t.textPos) {
+                const dx = pos.x - t.textPos.x;
+                const dy = pos.y - t.textPos.y;
+                if (dx*dx + dy*dy <= 400) { 
+                    clickedTransition = t;
+                    break;
+                }
+            }
+        }
+
+        if (clickedTransition) {
+            pendingTransition = clickedTransition; 
+            pendingTransition.isEdit = true;
+            transInput.value = clickedTransition.symbols.join(', ');
+            transModalTitle.textContent = "Editar Transición";
+            transModal.classList.remove('hidden');
+            setTimeout(() => transInput.focus(), 50);
+        }
+    });
+
+    document.querySelectorAll('.tool-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            if (isSimulating) return;
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            const target = e.currentTarget;
+            target.classList.add('active');
+            currentMode = target.dataset.mode;
+            container.style.cursor = currentMode === 'MOVE' ? 'default' : 'crosshair';
+            selectionBox.active = false;
+            isDraggingMulti = false;
+            draw();
+        });
+    });
+
+    document.getElementById('btnClearAll').addEventListener('click', () => {
+        saveHistoryState();
+        states = [];
+        transitions = [];
+        nextStateId = 0;
+        selectedStates = [];
+        updatePropsPanel();
+        draw();
+    });
+
+    document.getElementById('btnClearHistory').addEventListener('click', () => {
+        document.getElementById('simHistoryList').innerHTML = '<li class="text-xs text-slate-400 dark:text-slate-500 text-center py-4 italic" id="emptyHistoryMsg">No hay simulaciones recientes.</li>';
+    });
+
+    stateLabelInput.addEventListener('input', (e) => {
+        if (selectedStates.length === 1) {
+            saveHistoryState();
+            selectedStates[0].label = e.target.value;
+            draw();
+            if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+        }
+    });
+    isInitialCheckbox.addEventListener('change', (e) => {
+        if (selectedStates.length === 1) {
+            saveHistoryState();
+            selectedStates[0].isInitial = e.target.checked;
+            draw();
+        }
+    });
+    isFinalCheckbox.addEventListener('change', (e) => {
+        if (selectedStates.length === 1) {
+            saveHistoryState();
+            selectedStates[0].isFinal = e.target.checked;
+            draw();
+            if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+        }
+    });
+
+    // --- Transitions & Modals ---
+    function closeTransModal() {
+        transModal.classList.add('hidden');
+        transInput.value = '';
+        pendingTransition = null;
+    }
+
+    document.getElementById('btnCancelTrans').addEventListener('click', closeTransModal);
+    
+    document.getElementById('btnEpsilon').addEventListener('click', () => {
+        transInput.value = transInput.value ? transInput.value + ', ε' : 'ε';
+        transInput.focus();
+    });
+
+    document.getElementById('btnSaveTrans').addEventListener('click', saveTransition);
+    transInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveTransition();
+        if (e.key === 'Escape') closeTransModal();
+    });
+
+    function saveTransition() {
+        if (!pendingTransition) return;
+        
+        let val = transInput.value.trim();
+
+        if (pendingTransition.isEdit) {
+            saveHistoryState();
+            if (val === '') {
+                transitions = transitions.filter(t => t !== pendingTransition);
+            } else {
+                let newSymbols = val.split(',').map(s => s.trim()).filter(s => s !== '');
+                newSymbols = newSymbols.map(s => s === 'e' || s === 'E' ? 'ε' : s);
+                if (newSymbols.length > 0) {
+                    pendingTransition.symbols = newSymbols;
+                }
+            }
+            closeTransModal();
+            draw();
+            if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+            return;
+        }
+
+        saveHistoryState();
+        if (!val) val = 'ε'; 
+        let newSymbols = val.split(',').map(s => s.trim()).filter(s => s !== '');
+        newSymbols = newSymbols.map(s => s === 'e' || s === 'E' ? 'ε' : s);
+
+        if (newSymbols.length > 0) {
+            let existing = transitions.find(t => t.from === pendingTransition.from && t.to === pendingTransition.to);
+            if (existing) {
+                newSymbols.forEach(s => {
+                    if (!existing.symbols.includes(s)) existing.symbols.push(s);
+                });
+            } else {
+                transitions.push(new AutomatonTransition(pendingTransition.from, pendingTransition.to, newSymbols));
+            }
+        }
+        closeTransModal();
+        draw();
+        if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+    }
+
+    // --- Sidepanel Transition Table ---
+    document.getElementById('btnShowTable').addEventListener('click', () => {
+        if (!tableSidepanel.classList.contains('translate-x-full')) {
+            tableSidepanel.classList.add('translate-x-full');
+        } else {
+            generateTransitionTable();
+            tableSidepanel.classList.remove('translate-x-full');
+        }
+    });
+    
+    document.getElementById('btnCloseTable').addEventListener('click', () => {
+        tableSidepanel.classList.add('translate-x-full');
+    });
+
+    function generateTransitionTable() {
+        let alphabet = new Set();
+        transitions.forEach(t => t.symbols.forEach(sym => alphabet.add(sym)));
+        let alphabetArr = Array.from(alphabet).sort();
+        
+        if (alphabetArr.includes('ε')) {
+            alphabetArr = alphabetArr.filter(s => s !== 'ε');
+            alphabetArr.push('ε');
+        }
+
+        if (states.length === 0) {
+            document.getElementById('tableContent').innerHTML = `<p class="text-center text-slate-500 py-4 italic text-sm">Agrega estados y transiciones para ver la tabla.</p>`;
+            return;
+        }
+
+        let html = `<table class="w-full text-sm text-left text-slate-600 dark:text-slate-300">
+            <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                <tr>
+                    <th scope="col" class="px-6 py-3 rounded-tl-lg">Estado</th>`;
+        alphabetArr.forEach(sym => {
+            html += `<th scope="col" class="px-6 py-3">${sym}</th>`;
+        });
+        html += `</tr></thead><tbody>`;
+
+        states.forEach(s => {
+            let stateLabel = s.label;
+            if (s.isInitial) stateLabel = '→ ' + stateLabel;
+            if (s.isFinal) stateLabel = '*' + stateLabel;
+
+            html += `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                <th scope="row" class="px-6 py-4 font-bold text-slate-900 dark:text-white whitespace-nowrap border-r dark:border-slate-700">${stateLabel}</th>`;
+            
+            alphabetArr.forEach(sym => {
+                let targets = transitions.filter(t => t.from === s && t.symbols.includes(sym)).map(t => t.to.label);
+                let targetStr = targets.length > 0 ? (targets.length > 1 ? `{ ${targets.join(', ')} }` : targets[0]) : '<span class="text-slate-300 dark:text-slate-600">∅</span>';
+                html += `<td class="px-6 py-4">${targetStr}</td>`;
+            });
+            html += `</tr>`;
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('tableContent').innerHTML = html;
+    }
+
+    // --- Fast Text Load ---
+    document.getElementById('btnTextLoad').addEventListener('click', () => {
+        const inputString = document.getElementById('textLoadInput').value.trim();
+        if(!inputString) {
+            showToast("Ingresa una cadena válida", "error");
+            return;
+        }
+        
+        const parts = inputString.split('-');
+        if(parts.length < 1) return;
+
+        saveHistoryState();
+        states = [];
+        transitions = [];
+        nextStateId = 0;
+
+        const rect = container.getBoundingClientRect();
+        let cWidth = rect.width;
+        let cHeight = rect.height;
+        let startY = cHeight / 2 || 300;
+        let stateMap = {};
+
+        let parseState = (str) => {
+            let isInit = false;
+            let isFin = false;
+            let label = str;
+            
+            if (label.startsWith('if') || label.startsWith('fi')) {
+                isInit = true; isFin = true; label = label.substring(2);
+            } else if (label.startsWith('i')) {
+                isInit = true; label = label.substring(1);
+            } else if (label.startsWith('f')) {
+                isFin = true; label = label.substring(1);
+            }
+
+            if (!stateMap[label]) {
+                let count = Object.keys(stateMap).length;
+                let x = 100 + (count * 150) % (cWidth > 200 ? cWidth - 100 : 800);
+                let y = startY + Math.floor((count * 150) / (cWidth > 200 ? cWidth - 100 : 800)) * 100;
+                
+                let ns = new AutomatonState(nextStateId++, x, y);
+                ns.label = label;
+                stateMap[label] = ns;
+                states.push(ns);
+            }
+            if (isInit) stateMap[label].isInitial = true;
+            if (isFin) stateMap[label].isFinal = true;
+
+            return stateMap[label];
+        };
+
+        let previousState = null;
+        let currentSymbols = [];
+
+        for(let i=0; i<parts.length; i++) {
+            if (i % 2 === 0) {
+                let currentState = parseState(parts[i]);
+                if (previousState && currentSymbols.length > 0) {
+                    let existing = transitions.find(t => t.from === previousState && t.to === currentState);
+                    if (existing) {
+                        currentSymbols.forEach(s => {
+                            if (!existing.symbols.includes(s)) existing.symbols.push(s);
+                        });
+                    } else {
+                        transitions.push(new AutomatonTransition(previousState, currentState, [...currentSymbols]));
+                    }
+                }
+                previousState = currentState;
+            } else {
+                currentSymbols = parts[i].split(/[.,]/).map(s => s.trim()).filter(s => s !== '');
+                currentSymbols = currentSymbols.map(s => s === 'e' || s === 'E' ? 'ε' : s);
+            }
+        }
+        
+        selectedStates = [];
+        transform = { scale: 1, offsetX: 0, offsetY: 0 }; 
+        updatePropsPanel();
+        
+        runAutoLayout(50);
+        
+        showToast("Autómata cargado exitosamente", "success");
+        if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+    });
+
+    // --- Auto Layout (Force Directed) ---
+    document.getElementById('btnAutoLayout').addEventListener('click', () => {
+        saveHistoryState();
+        runAutoLayout(150);
+    });
+
+    function runAutoLayout(iterations) {
+        if(states.length <= 1) return;
+        
+        const rect = container.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const area = width * height;
+        const k = Math.sqrt(area / states.length) * 0.4; 
+        let temperature = width / 10;
+        
+        function step() {
+            let disp = new Map();
+            states.forEach(s => disp.set(s, {x:0, y:0}));
+
+            for(let i=0; i<states.length; i++) {
+                for(let j=i+1; j<states.length; j++) {
+                    let v = states[i], u = states[j];
+                    let dx = v.x - u.x, dy = v.y - u.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy) || 0.1;
+                    let force = (k*k) / dist;
+                    disp.get(v).x += (dx/dist) * force;
+                    disp.get(v).y += (dy/dist) * force;
+                    disp.get(u).x -= (dx/dist) * force;
+                    disp.get(u).y -= (dy/dist) * force;
+                }
+            }
+
+            transitions.forEach(t => {
+                if(t.from === t.to) return;
+                let v = t.from, u = t.to;
+                let dx = v.x - u.x, dy = v.y - u.y;
+                let dist = Math.sqrt(dx*dx + dy*dy) || 0.1;
+                let force = (dist*dist) / k;
+                disp.get(v).x -= (dx/dist) * force;
+                disp.get(v).y -= (dy/dist) * force;
+                disp.get(u).x += (dx/dist) * force;
+                disp.get(u).y += (dy/dist) * force;
+            });
+
+            states.forEach(v => {
+                let dx = (width/2) - v.x;
+                let dy = (height/2) - v.y;
+                let dist = Math.sqrt(dx*dx + dy*dy) || 0.1;
+                let force = dist / k; 
+                disp.get(v).x += (dx/dist) * force;
+                disp.get(v).y += (dy/dist) * force;
+            });
+
+            states.forEach(v => {
+                let d = disp.get(v);
+                let dist = Math.sqrt(d.x*d.x + d.y*d.y) || 0.1;
+                v.x += (d.x/dist) * Math.min(dist, temperature);
+                v.y += (d.y/dist) * Math.min(dist, temperature);
+                
+                v.x = Math.max(v.radius, Math.min(width - v.radius, v.x));
+                v.y = Math.max(v.radius, Math.min(height - v.radius, v.y));
+            });
+
+            temperature *= 0.95;
+            iterations--;
+            draw();
+
+            if(iterations > 0) requestAnimationFrame(step);
+            else showToast("Reorganización completada", "info");
+        }
+        requestAnimationFrame(step);
+    }
+
+    // --- Determinization ---
+    document.getElementById('btnDeterminize').addEventListener('click', determinizeNFA);
+
+    function determinizeNFA() {
+        if (isSimulating) return;
+
+        let initialNFAStates = states.filter(s => s.isInitial);
+        if (initialNFAStates.length === 0) {
+            showToast("Se requiere al menos un estado Inicial para determinizar.", "error");
+            return;
+        }
+
+        saveHistoryState();
+
+        let alphabet = new Set();
+        transitions.forEach(t => t.symbols.forEach(sym => {
+            if (sym !== 'ε') alphabet.add(sym);
+        }));
+        let alphabetArr = Array.from(alphabet);
+
+        let initialClosure = getEpsilonClosure(new Set(initialNFAStates));
+        let dfaStatesSets = []; 
+        let dfaTransitions = []; 
+        let queue = [initialClosure];
+        dfaStatesSets.push(initialClosure);
+
+        function findDFAStateIndex(set) {
+            for (let i = 0; i < dfaStatesSets.length; i++) {
+                if (dfaStatesSets[i].size === set.size && [...dfaStatesSets[i]].every(value => set.has(value))) return i;
+            }
+            return -1;
+        }
+
+        while (queue.length > 0) {
+            let currentSet = queue.shift();
+            let currentIndex = findDFAStateIndex(currentSet);
+
+            alphabetArr.forEach(sym => {
+                let reachable = new Set();
+                currentSet.forEach(s => {
+                    transitions.forEach(t => {
+                        if (t.from === s && t.symbols.includes(sym)) reachable.add(t.to);
+                    });
+                });
+
+                if (reachable.size > 0) {
+                    let targetClosure = getEpsilonClosure(reachable);
+                    let targetIndex = findDFAStateIndex(targetClosure);
+
+                    if (targetIndex === -1) {
+                        dfaStatesSets.push(targetClosure);
+                        queue.push(targetClosure);
+                        targetIndex = dfaStatesSets.length - 1;
+                    }
+                    dfaTransitions.push({ fromIndex: currentIndex, toIndex: targetIndex, symbol: sym });
+                }
+            });
+        }
+
+        let newStates = [];
+        let newTransitions = [];
+        const rect = container.getBoundingClientRect();
+        let centerX = rect.width / 2;
+        let centerY = rect.height / 2;
+        let radius = Math.min(centerX, centerY) * 0.7;
+
+        dfaStatesSets.forEach((set, i) => {
+            let angle = (i / dfaStatesSets.length) * 2 * Math.PI - Math.PI/2; 
+            let x = centerX + radius * Math.cos(angle);
+            let y = centerY + radius * Math.sin(angle);
+            
+            let ns = new AutomatonState(i, x, y);
+            let oldLabels = Array.from(set).map(s => s.label).sort().join(',');
+            ns.label = `{${oldLabels}}`.substring(0, 12); 
+            if (ns.label.length === 12) ns.label += '...';
+
+            if (i === 0) ns.isInitial = true;
+            ns.isFinal = Array.from(set).some(s => s.isFinal);
+            newStates.push(ns);
+        });
+
+        let groupedTrans = {};
+        dfaTransitions.forEach(t => {
+            let key = `${t.fromIndex}-${t.toIndex}`;
+            if (!groupedTrans[key]) groupedTrans[key] = [];
+            if (!groupedTrans[key].includes(t.symbol)) groupedTrans[key].push(t.symbol);
+        });
+
+        for (let key in groupedTrans) {
+            let [from, to] = key.split('-').map(Number);
+            newTransitions.push(new AutomatonTransition(newStates[from], newStates[to], groupedTrans[key]));
+        }
+
+        states = newStates;
+        transitions = newTransitions;
+        nextStateId = newStates.length;
+        selectedStates = [];
+        transform = { scale: 1, offsetX: 0, offsetY: 0 };
+        updatePropsPanel();
+        draw();
+        showToast("Autómata determinizado (NFA a DFA)", "success");
+        if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+    }
+
+
+    // --- Simulation & Detailed Logs ---
+    function getEpsilonClosure(stateSet) {
+        let closure = new Set(stateSet);
+        let stack = Array.from(stateSet);
+
+        while (stack.length > 0) {
+            let s = stack.pop();
+            for (let t of transitions) {
+                if (t.from === s && t.symbols.includes('ε')) {
+                    if (!closure.has(t.to)) {
+                        closure.add(t.to);
+                        stack.push(t.to);
+                    }
+                }
+            }
+        }
+        return closure;
+    }
+
+    function updateUIForSimulation() {
+        if (isSimulating) {
+            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = true);
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.add('opacity-50'));
+            statePropsPanel.classList.add('hidden');
+            simInput.classList.add('hidden');
+            simDisplay.classList.remove('hidden');
+            btnSimStep.textContent = "Siguiente Paso";
+            btnSimReset.classList.remove('hidden');
+            btnSimFull.classList.add('hidden');
+        } else {
+            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = false);
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('opacity-50'));
+            if(selectedStates.length === 1) statePropsPanel.classList.remove('hidden');
+            simInput.classList.remove('hidden');
+            simDisplay.classList.add('hidden');
+            btnSimStep.textContent = "Paso a Paso";
+            btnSimReset.classList.add('hidden');
+            btnSimFull.classList.remove('hidden');
+        }
+    }
+
+    function renderSimString() {
+        if (simStatus === 'IDLE') return;
+        let html = '';
+        for (let i = 0; i < simString.length; i++) {
+            if (i === simIndex && simStatus === 'PLAYING') {
+                html += `<span class="bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded px-1">${simString[i]}</span>`;
+            } else if (i < simIndex) {
+                html += `<span class="text-slate-400 dark:text-slate-500">${simString[i]}</span>`;
+            } else {
+                html += `<span>${simString[i]}</span>`;
+            }
+        }
+        if (simIndex === simString.length && simStatus === 'PLAYING') {
+            html += `<span class="bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded px-1 animate-pulse">_</span>`;
+        }
+        simDisplay.innerHTML = html || '<span class="text-slate-400 italic text-sm">Cadena vacía (ε)</span>';
+    }
+
+    function startSimulation() {
+        let initialStates = states.filter(s => s.isInitial);
+        if (initialStates.length === 0) {
+            showToast("Debes definir al menos un estado Inicial.", "error");
+            return false;
+        }
+
+        simString = simInput.value;
+        simIndex = 0;
+        simStatus = 'PLAYING';
+        isSimulating = true;
+        currentSimLog = []; 
+        
+        simActiveStates = getEpsilonClosure(new Set(initialStates));
+        
+        currentSimLog.push({
+            symbol: 'ε (Arranque)',
+            states: Array.from(simActiveStates).map(s => s.label).join(', ') || '∅'
+        });
+
+        updateUIForSimulation();
+        renderSimString();
+        draw();
+        return true;
+    }
+
+    function processStep() {
+        if (simStatus !== 'PLAYING') return;
+
+        if (simIndex >= simString.length) {
+            let accepted = Array.from(simActiveStates).some(s => s.isFinal);
+            simStatus = accepted ? 'ACCEPTED' : 'REJECTED';
+            renderSimString();
+            draw();
+            showToast(accepted ? "¡Cadena Aceptada!" : "Cadena Rechazada", accepted ? 'success' : 'error');
+            
+            const emptyMsg = document.getElementById('emptyHistoryMsg');
+            if(emptyMsg) emptyMsg.remove();
+            
+            const list = document.getElementById('simHistoryList');
+            const li = document.createElement('li');
+            const statusText = accepted ? 'Aprobada' : 'Rechazada';
+            const colorClass = accepted ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400';
+            const bgClass = accepted ? 'bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/40' : 'bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40';
+            const displayStr = simString === "" ? "ε (vacía)" : simString;
+            
+            li.className = `p-2 rounded border border-slate-100 dark:border-slate-700 cursor-pointer transition-colors flex justify-between items-center text-sm ${bgClass}`;
+            li.innerHTML = `<span class="truncate mr-2 font-mono dark:text-slate-200" title="${displayStr}">${displayStr}</span>
+                            <span class="font-bold text-xs uppercase ${colorClass}">${statusText}</span>`;
+            
+            li.dataset.log = JSON.stringify(currentSimLog);
+            li.dataset.status = statusText;
+            li.addEventListener('dblclick', function() {
+                showSimDetails(this.dataset.log, displayStr, this.dataset.status);
+            });
+
+            list.prepend(li);
+            return;
+        }
+
+        let symbol = simString[simIndex];
+        let nextStates = new Set();
+
+        for (let s of simActiveStates) {
+            for (let t of transitions) {
+                if (t.from === s && t.symbols.includes(symbol)) nextStates.add(t.to);
+            }
+        }
+
+        simActiveStates = getEpsilonClosure(nextStates);
+        
+        currentSimLog.push({
+            symbol: symbol,
+            states: Array.from(simActiveStates).map(s => s.label).join(', ') || '∅'
+        });
+
+        simIndex++;
+        renderSimString();
+        draw();
+    }
+
+    btnSimStep.addEventListener('click', () => {
+        if (!isSimulating) startSimulation();
+        else processStep();
+    });
+
+    btnSimFull.addEventListener('click', () => {
+        if (!startSimulation()) return;
+        while(simStatus === 'PLAYING') processStep();
+    });
+
+    btnSimReset.addEventListener('click', () => {
+        isSimulating = false;
+        simStatus = 'IDLE';
+        simActiveStates.clear();
+        updateUIForSimulation();
+        draw();
+    });
+
+    function showSimDetails(logStr, simString, status) {
+        const log = JSON.parse(logStr);
+        const tbody = document.getElementById('simDetailContent');
+        const statusEl = document.getElementById('simDetailStatus');
+        
+        statusEl.textContent = `${simString} - ${status}`;
+        statusEl.className = `text-xs font-bold mt-1 uppercase ${status === 'Aprobada' ? 'text-emerald-500' : 'text-red-500'}`;
+        
+        tbody.innerHTML = '';
+        log.forEach((step, idx) => {
+            const tr = document.createElement('tr');
+            tr.className = "bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50";
+            tr.innerHTML = `
+                <td class="px-4 py-2 font-medium">${idx}</td>
+                <td class="px-4 py-2 text-center font-mono text-blue-600 dark:text-blue-400 bg-slate-50 dark:bg-slate-900/50">${step.symbol}</td>
+                <td class="px-4 py-2 font-mono ${step.states === '∅' ? 'text-red-400' : 'text-slate-800 dark:text-slate-200'}">${step.states}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        simDetailModal.classList.remove('hidden');
+    }
+
+    document.getElementById('btnCloseDetailModal').addEventListener('click', () => {
+        simDetailModal.classList.add('hidden');
+    });
+
+    function loadExample() {
+        let q0 = new AutomatonState(0, 150, window.innerHeight/2 || 300); q0.isInitial = true;
+        let q1 = new AutomatonState(1, 300, window.innerHeight/2 || 300);
+        let q2 = new AutomatonState(2, 450, window.innerHeight/2 || 300);
+        let q3 = new AutomatonState(3, 600, window.innerHeight/2 || 300); q3.isFinal = true;
+        
+        states.push(q0, q1, q2, q3);
+        nextStateId = 4;
+
+        transitions.push(new AutomatonTransition(q0, q0, ['b']));
+        transitions.push(new AutomatonTransition(q0, q1, ['a']));
+        transitions.push(new AutomatonTransition(q1, q1, ['a']));
+        transitions.push(new AutomatonTransition(q1, q2, ['b']));
+        transitions.push(new AutomatonTransition(q2, q3, ['b']));
+        transitions.push(new AutomatonTransition(q2, q1, ['a'])); 
+        transitions.push(new AutomatonTransition(q3, q0, ['b'])); 
+        transitions.push(new AutomatonTransition(q3, q1, ['a'])); 
+        saveHistoryState(); 
+    }
+
+    setTimeout(() => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        resizeCanvas();
+        loadExample();
+        draw();
+        showToast("¡Archivo & Exportación añadidos!", "info");
+    }, 100);
+
+</script>
+</body>
+</html>
