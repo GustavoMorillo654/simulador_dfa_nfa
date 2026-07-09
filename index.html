@@ -11,6 +11,18 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    colors: {
+                        appbg: 'var(--color-bg-app)',
+                        panelbg: 'var(--color-bg-panel)',
+                        appborder: 'var(--color-border)',
+                        textmain: 'var(--color-text-main)',
+                        textmuted: 'var(--color-text-muted)',
+                        brand: {
+                            50: 'var(--color-primary-light)',
+                            500: 'var(--color-primary)',
+                            600: 'var(--color-primary-hover)',
+                        }
+                    },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
@@ -22,6 +34,116 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --color-primary: #3b82f6;
+            --color-primary-hover: #2563eb;
+            --color-primary-light: #eff6ff;
+            --color-bg-app: #f8fafc;
+            --color-bg-panel: #ffffff;
+            --color-border: #e2e8f0;
+            --color-text-main: #0f172a;
+            --color-text-muted: #64748b;
+        }
+
+        .dark {
+            --color-primary: #60a5fa;
+            --color-primary-hover: #3b82f6;
+            --color-primary-light: #1e3a8a;
+            --color-bg-app: #0f172a;
+            --color-bg-panel: #1e293b;
+            --color-border: #334155;
+            --color-text-main: #f8fafc;
+            --color-text-muted: #94a3b8;
+        }
+
+        /* PALETTE: EMERALD */
+        .palette-emerald {
+            --color-primary: #10b981;
+            --color-primary-hover: #059669;
+            --color-primary-light: #f0fdf4;
+            --color-bg-app: #f4fcf6;
+            --color-bg-panel: #ffffff;
+            --color-border: #d1ebd0;
+            --color-text-main: #064e3b;
+            --color-text-muted: #047857;
+        }
+        .dark.palette-emerald {
+            --color-primary: #34d399;
+            --color-primary-hover: #10b981;
+            --color-primary-light: #064e3b;
+            --color-bg-app: #061914;
+            --color-bg-panel: #0b2b21;
+            --color-border: #144637;
+            --color-text-main: #d1faf0;
+            --color-text-muted: #6ee7b7;
+        }
+
+        /* PALETTE: TERRACOTTA */
+        .palette-terracotta {
+            --color-primary: #e2583e;
+            --color-primary-hover: #c2410c;
+            --color-primary-light: #fff5f2;
+            --color-bg-app: #fdf8f5;
+            --color-bg-panel: #ffffff;
+            --color-border: #f2ded5;
+            --color-text-main: #781f0e;
+            --color-text-muted: #9a3412;
+        }
+        .dark.palette-terracotta {
+            --color-primary: #f47560;
+            --color-primary-hover: #e2583e;
+            --color-primary-light: #781f0e;
+            --color-bg-app: #1c0e0a;
+            --color-bg-panel: #2a1610;
+            --color-border: #4a261c;
+            --color-text-main: #ffebe6;
+            --color-text-muted: #fbb6a9;
+        }
+
+        /* PALETTE: BONDI */
+        .palette-bondi {
+            --color-primary: #0095b6;
+            --color-primary-hover: #007691;
+            --color-primary-light: #ecf9fc;
+            --color-bg-app: #f0f9fc;
+            --color-bg-panel: #ffffff;
+            --color-border: #ccebf2;
+            --color-text-main: #054453;
+            --color-text-muted: #086b82;
+        }
+        .dark.palette-bondi {
+            --color-primary: #26c6da;
+            --color-primary-hover: #0095b6;
+            --color-primary-light: #054453;
+            --color-bg-app: #041921;
+            --color-bg-panel: #082631;
+            --color-border: #0f3e4f;
+            --color-text-main: #e0f7fa;
+            --color-text-muted: #80deea;
+        }
+
+        /* PALETTE: LAVENDER */
+        .palette-lavender {
+            --color-primary: #8b5cf6;
+            --color-primary-hover: #7c3aed;
+            --color-primary-light: #f5f3ff;
+            --color-bg-app: #fcfbfe;
+            --color-bg-panel: #ffffff;
+            --color-border: #e8e3f5;
+            --color-text-main: #3b1d5c;
+            --color-text-muted: #6d459c;
+        }
+        .dark.palette-lavender {
+            --color-primary: #a78bfa;
+            --color-primary-hover: #8b5cf6;
+            --color-primary-light: #2e1065;
+            --color-bg-app: #12091f;
+            --color-bg-panel: #1a0f2b;
+            --color-border: #381e5c;
+            --color-text-main: #f5f3ff;
+            --color-text-muted: #c084fc;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             overflow: hidden; 
@@ -31,14 +153,9 @@
             outline: none;
         }
         .tool-btn.active {
-            background-color: #eff6ff;
-            border-color: #3b82f6;
-            color: #1d4ed8;
-        }
-        .dark .tool-btn.active {
-            background-color: #1e3a8a;
-            border-color: #3b82f6;
-            color: #bfdbfe;
+            background-color: var(--color-primary-light);
+            border-color: var(--color-primary);
+            color: var(--color-primary-hover);
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -48,56 +165,58 @@
             background: transparent; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
+            background: var(--color-border); 
             border-radius: 10px;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569; 
-        }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
+            background: var(--color-primary); 
         }
         .cursor-grab { cursor: grab !important; }
         .cursor-grabbing { cursor: grabbing !important; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-200">
+<body class="bg-appbg text-textmain transition-colors duration-200">
 
 <div id="app" class="flex flex-col md:flex-row h-screen w-full">
     <!-- Sidebar -->
-    <div class="w-full md:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col shadow-lg z-10 transition-colors duration-200 overflow-y-auto">
-        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+    <div class="w-full md:w-80 bg-panelbg border-r border-appborder flex flex-col shadow-lg z-10 transition-colors duration-200 overflow-y-auto">
+        <div class="p-4 border-b border-appborder flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                <h1 class="text-xl font-bold text-brand-500 flex items-center gap-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     Simulador Pro
                 </h1>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">DFA/NFA + Archivos & Layout</p>
+                <p class="text-[10px] text-textmuted mt-1">DFA/NFA + Archivos & Layout</p>
             </div>
-            <button id="btnThemeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" title="Alternar Modo Oscuro">
-                <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <button id="btnPaletteSelect" class="p-2 rounded-lg bg-appbg text-textmuted hover:bg-brand-50 hover:text-brand-600 transition-colors" title="Seleccionar Paleta de Colores">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                </button>
+                <button id="btnThemeToggle" class="p-2 rounded-lg bg-appbg text-textmuted hover:bg-brand-50 hover:text-brand-600 transition-colors" title="Alternar Modo Oscuro">
+                    <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+            </div>
         </div>
 
         <div class="p-4 flex-1 flex flex-col gap-4">
             <!-- Herramientas -->
             <div>
-                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Herramientas</h2>
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Herramientas</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button class="tool-btn active flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="MOVE">
+                    <button class="tool-btn active flex items-center justify-center gap-2 p-2 border border-appborder rounded hover:bg-appbg transition-colors text-sm font-medium" data-mode="MOVE">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
                         Mover
                     </button>
-                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="ADD_STATE">
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-appborder rounded hover:bg-appbg transition-colors text-sm font-medium" data-mode="ADD_STATE">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Estado
                     </button>
-                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium" data-mode="ADD_TRANSITION">
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-appborder rounded hover:bg-appbg transition-colors text-sm font-medium" data-mode="ADD_TRANSITION">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         Transición
                     </button>
-                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors text-sm font-medium" data-mode="DELETE">
+                    <button class="tool-btn flex items-center justify-center gap-2 p-2 border border-appborder rounded hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors text-sm font-medium" data-mode="DELETE">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         Eliminar
                     </button>
@@ -105,14 +224,14 @@
             </div>
 
             <!-- Archivo & Exportación -->
-            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
-                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Archivo & Exportación</h2>
+            <div class="pt-2 border-t border-appborder">
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Archivo & Exportación</h2>
                 <div class="grid grid-cols-2 gap-2 mb-2">
-                    <button id="btnSaveJson" class="py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-xs font-medium shadow-sm border border-slate-200 dark:border-slate-600">
+                    <button id="btnSaveJson" class="py-1.5 bg-appbg text-textmain rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-xs font-medium shadow-sm border border-appborder">
                         Guardar (.json)
                     </button>
                     <input type="file" id="fileLoadInput" accept=".json" class="hidden">
-                    <button id="btnLoadJson" class="py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-xs font-medium shadow-sm border border-slate-200 dark:border-slate-600">
+                    <button id="btnLoadJson" class="py-1.5 bg-appbg text-textmain rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-xs font-medium shadow-sm border border-appborder">
                         Cargar (.json)
                     </button>
                 </div>
@@ -127,55 +246,71 @@
             </div>
 
             <!-- Acciones -->
-            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
-                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Acciones</h2>
-                <div class="flex flex-col gap-2">
-                    <button id="btnAutoLayout" class="w-full py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+            <div class="pt-2 border-t border-appborder">
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Acciones</h2>
+                <div class="grid grid-cols-4 gap-1">
+                    <button id="btnAutoLayout" class="py-1.5 bg-appbg text-textmain border border-appborder rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-[9px] font-medium shadow-sm flex flex-col items-center justify-center gap-1" title="Reorganizar Layout">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-                        Reorganización Automática
+                        Diseño
                     </button>
-                    <button id="btnShowTable" class="w-full py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                    <button id="btnShowTable" class="py-1.5 bg-appbg text-textmain border border-appborder rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-[9px] font-medium shadow-sm flex flex-col items-center justify-center gap-1" title="Ver Tabla de Transiciones">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                        Panel de Análisis
+                        Tabla
                     </button>
-                    <button id="btnDeterminize" class="w-full py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                    <button id="btnDeterminize" class="py-1.5 bg-appbg text-textmain border border-appborder rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-[9px] font-medium shadow-sm flex flex-col items-center justify-center gap-1" title="Determinizar (NFA a DFA)">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                        Determinizar (NFA → DFA)
+                        Det. NFA
                     </button>
-                    <div class="flex justify-between items-center mt-1">
-                        <button id="btnClearAll" class="py-1 text-xs text-slate-400 dark:text-slate-500 hover:text-red-500 transition-colors">Limpiar todo</button>
-                        <button id="btnCenterView" class="py-1 text-xs text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-colors">Centrar Vista</button>
-                    </div>
+                    <button id="btnMinimize" class="py-1.5 bg-appbg text-textmain border border-appborder rounded hover:bg-brand-50 hover:text-brand-600 transition-colors text-[9px] font-medium shadow-sm flex flex-col items-center justify-center gap-1" title="Minimizar DFA (Autómata Cociente)">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4V4zm4 4v8m8-8v8M8 12h8"></path></svg>
+                        Min. DFA
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                    <button id="btnClearAll" class="py-1 text-xs text-textmuted hover:text-red-500 transition-colors">Limpiar todo</button>
+                    <button id="btnCenterView" class="py-1 text-xs text-textmuted hover:text-brand-500 transition-colors">Centrar Vista</button>
                 </div>
             </div>
 
             <!-- Carga por Texto -->
-            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
-                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Carga Rápida</h2>
+            <div class="pt-2 border-t border-appborder">
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Carga Rápida</h2>
                 <div class="flex flex-col gap-2">
-                    <input type="text" id="textLoadInput" class="w-full px-2 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono dark:text-white" placeholder="Ej: iq0-a.b-fq1">
-                    <button id="btnTextLoad" class="w-full py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
+                    <input type="text" id="textLoadInput" class="w-full px-2 py-2 bg-panelbg border border-appborder rounded text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-textmain" placeholder="Ej: iq0-a.b-fq1">
+                    <button id="btnTextLoad" class="w-full py-2 bg-brand-50 text-brand-600 rounded hover:bg-brand-50/80 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Generar Autómata
                     </button>
                 </div>
             </div>
 
+            <!-- Expresión Regular -->
+            <div class="pt-2 border-t border-appborder">
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Expresión Regular a NFA</h2>
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="regexInput" class="w-full px-2 py-2 bg-panelbg border border-appborder rounded text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-textmain" placeholder="Ej: (a|b)*abb">
+                    <button id="btnRegexLoad" class="w-full py-2 bg-brand-50 text-brand-600 rounded hover:bg-brand-50/80 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-2" title="Convertir a NFA mediante Algoritmo de Thompson">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Convertir Regex
+                    </button>
+                </div>
+            </div>
+
             <!-- Propiedades del Estado Seleccionado -->
-            <div id="statePropertiesPanel" class="hidden bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-                <h2 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Propiedades</h2>
+            <div id="statePropertiesPanel" class="hidden bg-appbg/50 p-3 rounded-lg border border-appborder">
+                <h2 class="text-sm font-bold text-textmain mb-2">Propiedades</h2>
                 <div class="flex flex-col gap-2">
                     <div>
-                        <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">Nombre / Etiqueta</label>
-                        <input type="text" id="stateLabelInput" class="w-full px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                        <label class="block text-xs text-textmuted mb-1">Nombre / Etiqueta</label>
+                        <input type="text" id="stateLabelInput" class="w-full px-2 py-1 bg-panelbg border border-appborder rounded text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-textmain">
                     </div>
                     <div class="flex items-center gap-4 mt-1">
-                        <label class="flex items-center gap-1.5 text-sm cursor-pointer dark:text-slate-300">
-                            <input type="checkbox" id="isInitialCheckbox" class="w-4 h-4 text-blue-600 bg-white dark:bg-slate-800 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500">
+                        <label class="flex items-center gap-1.5 text-sm cursor-pointer text-textmain">
+                            <input type="checkbox" id="isInitialCheckbox" class="w-4 h-4 text-brand-500 bg-panelbg rounded border-appborder focus:ring-brand-500">
                             Inicial
                         </label>
-                        <label class="flex items-center gap-1.5 text-sm cursor-pointer dark:text-slate-300">
-                            <input type="checkbox" id="isFinalCheckbox" class="w-4 h-4 text-blue-600 bg-white dark:bg-slate-800 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500">
+                        <label class="flex items-center gap-1.5 text-sm cursor-pointer text-textmain">
+                            <input type="checkbox" id="isFinalCheckbox" class="w-4 h-4 text-brand-500 bg-panelbg rounded border-appborder focus:ring-brand-500">
                             Final
                         </label>
                     </div>
@@ -184,33 +319,33 @@
 
             <!-- Simulador -->
             <div class="mt-auto pb-4">
-                <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Simulación</h2>
-                <div class="bg-blue-50 dark:bg-slate-900/80 p-3 rounded-lg border border-blue-100 dark:border-slate-700">
-                    <label class="block text-xs font-semibold text-blue-800 dark:text-blue-400 mb-1">Cadena a evaluar:</label>
-                    <input type="text" id="simInput" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-600 rounded shadow-inner mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm dark:text-white" placeholder="Ej: aabb">
+                <h2 class="text-xs font-bold text-textmuted uppercase tracking-wider mb-2">Simulación</h2>
+                <div class="bg-brand-50/20 p-3 rounded-lg border border-appborder">
+                    <label class="block text-xs font-semibold text-brand-600 mb-1">Cadena a evaluar:</label>
+                    <input type="text" id="simInput" class="w-full px-3 py-2 bg-panelbg border border-appborder rounded shadow-inner mb-3 focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-sm text-textmain" placeholder="Ej: aabb">
                     
-                    <div id="simDisplay" class="hidden w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-600 rounded mb-3 font-mono text-lg tracking-widest text-center overflow-x-auto whitespace-nowrap dark:text-white"></div>
+                    <div id="simDisplay" class="hidden w-full px-3 py-2 bg-panelbg border border-appborder rounded mb-3 font-mono text-lg tracking-widest text-center overflow-x-auto whitespace-nowrap text-textmain"></div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <button id="btnSimStep" class="py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm">
+                        <button id="btnSimStep" class="py-2 bg-brand-500 text-white rounded hover:bg-brand-600 transition-colors text-sm font-medium shadow-sm text-center">
                             Paso a Paso
                         </button>
-                        <button id="btnSimFull" class="py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors text-sm font-medium shadow-sm">
+                        <button id="btnSimFull" class="py-2 bg-brand-600 text-white rounded hover:bg-brand-700 transition-colors text-sm font-medium shadow-sm text-center">
                             Evaluar Todo
                         </button>
+                        <button id="btnSimReset" class="hidden py-2 bg-appbg text-textmain border border-appborder rounded hover:bg-brand-50 transition-colors text-sm font-medium shadow-sm text-center">
+                            Reiniciar
+                        </button>
                     </div>
-                    <button id="btnSimReset" class="hidden mt-2 w-full py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-sm font-medium">
-                        Reiniciar Simulación
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Canvas Area -->
-    <div class="flex-1 relative overflow-hidden bg-slate-50 dark:bg-slate-900 cursor-crosshair transition-colors duration-200" id="canvasContainer">
+    <div class="flex-1 relative overflow-hidden bg-appbg cursor-crosshair transition-colors duration-200" id="canvasContainer">
         <canvas id="automatonCanvas" class="absolute inset-0 w-full h-full" tabindex="0"></canvas>
-        <div class="absolute bottom-4 left-4 text-[11px] text-slate-500 dark:text-slate-400 bg-white/90 dark:bg-slate-800/90 px-3 py-2 rounded shadow-sm backdrop-blur pointer-events-none border border-slate-200 dark:border-slate-700 leading-relaxed">
+        <div class="absolute bottom-4 left-4 text-[11px] text-textmuted bg-panelbg/90 px-3 py-2 rounded shadow-sm backdrop-blur pointer-events-none border border-appborder leading-relaxed">
             <strong>Atajos:</strong><br>
             • <code>Ctrl+Z</code> / <code>Ctrl+Y</code>: Deshacer/Rehacer<br>
             • <code>Rueda Mouse</code>: Zoom In/Out<br>
@@ -221,36 +356,36 @@
 </div>
 
 <!-- Modal Transición -->
-<div id="transitionModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-[60]">
-    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl w-80 transform transition-all border border-slate-200 dark:border-slate-700">
-        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2" id="transModalTitle">Símbolo(s) de Transición</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Separa múltiples símbolos con comas (Ej: a, b). Vacío para eliminar.</p>
-        <input type="text" id="transSymbolInput" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 p-2 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono dark:text-white" placeholder="Símbolo" autocomplete="off">
+<div id="transitionModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
+    <div class="bg-panelbg p-6 rounded-xl shadow-2xl w-80 transform transition-all border border-appborder">
+        <h3 class="text-lg font-bold text-textmain mb-2" id="transModalTitle">Símbolo(s) de Transición</h3>
+        <p class="text-xs text-textmuted mb-4">Separa múltiples símbolos con comas (Ej: a, b). Vacío para eliminar.</p>
+        <input type="text" id="transSymbolInput" class="w-full bg-panelbg border border-appborder p-2 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-textmain" placeholder="Símbolo" autocomplete="off">
         <div class="flex justify-between items-center">
-            <button id="btnEpsilon" class="text-sm text-blue-600 dark:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded transition-colors">Añadir ε</button>
+            <button id="btnEpsilon" class="text-sm text-brand-500 font-medium hover:bg-brand-50 px-3 py-1.5 rounded transition-colors">Añadir ε</button>
             <div class="flex gap-2">
-                <button id="btnCancelTrans" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancelar</button>
-                <button id="btnSaveTrans" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Guardar</button>
+                <button id="btnCancelTrans" class="px-4 py-2 bg-appbg text-textmain font-medium rounded-lg hover:bg-brand-50 transition-colors">Cancelar</button>
+                <button id="btnSaveTrans" class="px-4 py-2 bg-brand-500 text-white font-medium rounded-lg hover:bg-brand-600 transition-colors shadow-sm">Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal Detalles de Simulación -->
-<div id="simDetailModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4">
-    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col transform transition-all border border-slate-200 dark:border-slate-700">
-        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+<div id="simDetailModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4">
+    <div class="bg-panelbg rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col transform transition-all border border-appborder">
+        <div class="p-4 border-b border-appborder flex justify-between items-center">
             <div>
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white">Detalle de Simulación</h3>
+                <h3 class="text-lg font-bold text-textmain">Detalle de Simulación</h3>
                 <p id="simDetailStatus" class="text-xs font-semibold mt-1 uppercase"></p>
             </div>
-            <button id="btnCloseDetailModal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <button id="btnCloseDetailModal" class="text-textmuted hover:text-textmain">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-        <div class="p-4 overflow-auto flex-1 bg-slate-50 dark:bg-slate-900">
-            <table class="w-full text-sm text-left text-slate-600 dark:text-slate-300">
-                <thead class="text-xs uppercase bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 sticky top-0">
+        <div class="p-4 overflow-auto flex-1 bg-appbg">
+            <table class="w-full text-sm text-left text-textmain">
+                <thead class="text-xs uppercase bg-appbg text-textmain sticky top-0">
                     <tr>
                         <th class="px-4 py-2">Paso</th>
                         <th class="px-4 py-2 text-center">Símbolo</th>
@@ -266,40 +401,136 @@
 </div>
 
 <!-- Sidepanel Tabla de Transiciones e Historial -->
-<div id="tableSidepanel" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-white dark:bg-slate-800 shadow-2xl z-40 transform transition-transform duration-300 translate-x-full border-l border-slate-200 dark:border-slate-700 flex flex-col">
-    <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Panel de Análisis</h3>
-        <button id="btnCloseTable" class="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-200 dark:hover:text-slate-200 dark:hover:bg-slate-700 transition-colors">
+<div id="tableSidepanel" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-panelbg shadow-2xl z-40 transform transition-transform duration-300 translate-x-full border-l border-appborder flex flex-col">
+    <div class="p-4 border-b border-appborder flex justify-between items-center bg-appbg/50">
+        <h3 class="text-lg font-bold text-textmain">Panel de Análisis</h3>
+        <button id="btnCloseTable" class="p-1 rounded-md text-textmuted hover:text-textmain hover:bg-appbg transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
     </div>
     
     <div class="flex-1 flex flex-col min-h-0">
         <!-- Tabla de Transiciones (Arriba) -->
-        <div class="flex-1 overflow-auto bg-white dark:bg-slate-800 flex flex-col">
+        <div class="flex-1 overflow-auto bg-panelbg flex flex-col">
             <!-- WRAPPER PARA EXPORTAR -->
-            <div id="tableExportWrapper" class="bg-white dark:bg-slate-800 w-full h-full flex flex-col">
-                <div class="p-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 sticky top-0 z-10">
-                    <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Tabla de Transiciones</h4>
+            <div id="tableExportWrapper" class="bg-panelbg w-full h-full flex flex-col">
+                <div class="p-3 border-b border-appborder bg-panelbg sticky top-0 z-10">
+                    <h4 class="text-xs font-bold text-textmain uppercase tracking-wider">Tabla de Transiciones</h4>
                 </div>
                 <div class="p-4 overflow-x-auto flex-1" id="tableContent">
                     <!-- La tabla se generará aquí -->
                 </div>
-                <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50">
+                <div class="p-3 border-t border-appborder text-xs text-textmuted bg-appbg/50">
                     <strong>Leyenda:</strong> '→' Inicial | '*' Final | '∅' Vacía
                 </div>
             </div>
         </div>
         
         <!-- Historial de Simulación (Abajo) -->
-        <div class="h-1/3 min-h-[250px] border-t-4 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex flex-col">
-            <div class="p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex justify-between items-center sticky top-0">
-                <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Historial (Doble Clic para detalle)</h4>
-                <button id="btnClearHistory" class="text-xs text-slate-500 hover:text-red-500 transition-colors">Limpiar</button>
+        <div class="h-1/3 min-h-[250px] border-t-4 border-appborder bg-appbg flex flex-col">
+            <div class="p-3 border-b border-appborder bg-appbg/80 flex justify-between items-center sticky top-0">
+                <h4 class="text-xs font-bold text-textmain uppercase tracking-wider">Historial (Doble Clic para detalle)</h4>
+                <button id="btnClearHistory" class="text-xs text-textmuted hover:text-red-500 transition-colors">Limpiar</button>
             </div>
             <ul id="simHistoryList" class="flex-1 overflow-y-auto p-3 space-y-2">
-                <li class="text-xs text-slate-400 dark:text-slate-500 text-center py-4 italic" id="emptyHistoryMsg">No hay simulaciones recientes.</li>
+                <li class="text-xs text-textmuted text-center py-4 italic" id="emptyHistoryMsg">No hay simulaciones recientes.</li>
             </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Paleta de Colores -->
+<div id="paletteModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
+    <div class="bg-panelbg p-6 rounded-xl shadow-2xl w-96 transform transition-all border border-appborder text-textmain">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-textmain">Paleta de Colores</h3>
+            <button id="btnClosePaletteModal" class="text-textmuted hover:text-textmain transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <p class="text-xs text-textmuted mb-4">Elige un esquema de colores para personalizar el simulador. Se aplicará a todo el entorno, autómatas y tablas.</p>
+        
+        <div class="flex flex-col gap-3">
+            <!-- Opción: Azul Clásico (Default) -->
+            <button class="palette-option-btn w-full p-3 rounded-lg border border-appborder hover:bg-appbg/50 transition-all flex items-center justify-between text-left" data-palette="default">
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #3b82f6;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #f8fafc; border: 1px solid #cbd5e1;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #0f172a;"></span>
+                    </div>
+                    <span class="font-medium text-sm text-textmain">Azul Clásico</span>
+                </div>
+                <span class="check-icon hidden text-brand-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </span>
+            </button>
+
+            <!-- Opción: Verde Esmeralda -->
+            <button class="palette-option-btn w-full p-3 rounded-lg border border-appborder hover:bg-appbg/50 transition-all flex items-center justify-between text-left" data-palette="emerald">
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #10b981;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #f4fcf6; border: 1px solid #d1ebd0;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #061914;"></span>
+                    </div>
+                    <span class="font-medium text-sm text-textmain">Verde Esmeralda</span>
+                </div>
+                <span class="check-icon hidden text-brand-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </span>
+            </button>
+
+            <!-- Opción: Naranja Terracota -->
+            <button class="palette-option-btn w-full p-3 rounded-lg border border-appborder hover:bg-appbg/50 transition-all flex items-center justify-between text-left" data-palette="terracotta">
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #e2583e;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #fdf8f5; border: 1px solid #f2ded5;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #1c0e0a;"></span>
+                    </div>
+                    <span class="font-medium text-sm text-textmain">Naranja Terracota</span>
+                </div>
+                <span class="check-icon hidden text-brand-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </span>
+            </button>
+
+            <!-- Opción: Azul Bondi -->
+            <button class="palette-option-btn w-full p-3 rounded-lg border border-appborder hover:bg-appbg/50 transition-all flex items-center justify-between text-left" data-palette="bondi">
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #0095b6;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #f0f9fc; border: 1px solid #ccebf2;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #041921;"></span>
+                    </div>
+                    <span class="font-medium text-sm text-textmain">Azul Bondi</span>
+                </div>
+                <span class="check-icon hidden text-brand-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </span>
+            </button>
+
+            <!-- Opción: Morado Lavanda -->
+            <button class="palette-option-btn w-full p-3 rounded-lg border border-appborder hover:bg-appbg/50 transition-all flex items-center justify-between text-left" data-palette="lavender">
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #8b5cf6;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #fcfbfe; border: 1px solid #e8e3f5;"></span>
+                        <span class="w-4 h-4 rounded-full shadow-sm" style="background-color: #12091f;"></span>
+                    </div>
+                    <span class="font-medium text-sm text-textmain">Morado Lavanda</span>
+                </div>
+                <span class="check-icon hidden text-brand-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </span>
+            </button>
+        </div>
+        
+        <div class="mt-6 flex justify-end">
+            <button id="btnApplyPalette" class="px-5 py-2 bg-brand-500 text-white font-medium rounded-lg hover:bg-brand-600 transition-colors shadow-sm text-sm">Aceptar</button>
         </div>
     </div>
 </div>
@@ -310,6 +541,289 @@
 </div>
 
 <script>
+    // --- Theme & Palette Configurations ---
+    const themePalettes = {
+        default: {
+            light: {
+                bg: '#f8fafc',
+                panel: '#ffffff',
+                border: '#cbd5e1',
+                text: '#0f172a',
+                textMuted: '#64748b',
+                primary: '#3b82f6',
+                primaryHover: '#2563eb',
+                primaryLight: '#eff6ff',
+                stateBg: '#ffffff',
+                stateBorder: '#334155',
+                stateText: '#0f172a',
+                selectedBg: '#eff6ff',
+                selectedBorder: '#2563eb',
+                activeBg: '#bbf7d0',
+                activeBorder: '#166534',
+                activeText: '#166534',
+                arrow: '#64748b',
+                arrowHead: '#334155',
+                selectionBg: 'rgba(59, 130, 246, 0.15)',
+                selectionBorder: 'rgba(59, 130, 246, 0.8)',
+                textBg: 'rgba(248, 250, 252, 0.9)'
+            },
+            dark: {
+                bg: '#0f172a',
+                panel: '#1e293b',
+                border: '#334155',
+                text: '#f8fafc',
+                textMuted: '#94a3b8',
+                primary: '#60a5fa',
+                primaryHover: '#3b82f6',
+                primaryLight: '#1e3a8a',
+                stateBg: '#1e293b',
+                stateBorder: '#94a3b8',
+                stateText: '#f8fafc',
+                selectedBg: '#1e3a8a',
+                selectedBorder: '#60a5fa',
+                activeBg: '#064e3b',
+                activeBorder: '#34d399',
+                activeText: '#a7f3d0',
+                arrow: '#64748b',
+                arrowHead: '#94a3b8',
+                selectionBg: 'rgba(96, 165, 250, 0.15)',
+                selectionBorder: 'rgba(96, 165, 250, 0.8)',
+                textBg: 'rgba(15, 23, 42, 0.9)'
+            }
+        },
+        emerald: {
+            light: {
+                bg: '#f4fcf6',
+                panel: '#ffffff',
+                border: '#d1ebd0',
+                text: '#064e3b',
+                textMuted: '#047857',
+                primary: '#10b981',
+                primaryHover: '#059669',
+                primaryLight: '#f0fdf4',
+                stateBg: '#ffffff',
+                stateBorder: '#047857',
+                stateText: '#064e3b',
+                selectedBg: '#f0fdf4',
+                selectedBorder: '#10b981',
+                activeBg: '#bbf7d0',
+                activeBorder: '#15803d',
+                activeText: '#15803d',
+                arrow: '#047857',
+                arrowHead: '#047857',
+                selectionBg: 'rgba(16, 185, 129, 0.15)',
+                selectionBorder: 'rgba(16, 185, 129, 0.8)',
+                textBg: 'rgba(244, 252, 246, 0.9)'
+            },
+            dark: {
+                bg: '#061914',
+                panel: '#0b2b21',
+                border: '#144637',
+                text: '#d1faf0',
+                textMuted: '#6ee7b7',
+                primary: '#34d399',
+                primaryHover: '#10b981',
+                primaryLight: '#064e3b',
+                stateBg: '#0b2b21',
+                stateBorder: '#6ee7b7',
+                stateText: '#d1faf0',
+                selectedBg: '#064e3b',
+                selectedBorder: '#34d399',
+                activeBg: '#022c22',
+                activeBorder: '#10b981',
+                activeText: '#a7f3d0',
+                arrow: '#144637',
+                arrowHead: '#6ee7b7',
+                selectionBg: 'rgba(52, 211, 153, 0.15)',
+                selectionBorder: 'rgba(52, 211, 153, 0.8)',
+                textBg: 'rgba(6, 25, 19, 0.9)'
+            }
+        },
+        terracotta: {
+            light: {
+                bg: '#fdf8f5',
+                panel: '#ffffff',
+                border: '#f2ded5',
+                text: '#781f0e',
+                textMuted: '#9a3412',
+                primary: '#e2583e',
+                primaryHover: '#c2410c',
+                primaryLight: '#fff5f2',
+                stateBg: '#ffffff',
+                stateBorder: '#9a3412',
+                stateText: '#781f0e',
+                selectedBg: '#fff5f2',
+                selectedBorder: '#e2583e',
+                activeBg: '#fed7aa',
+                activeBorder: '#c2410c',
+                activeText: '#7c2d12',
+                arrow: '#9a3412',
+                arrowHead: '#9a3412',
+                selectionBg: 'rgba(226, 88, 62, 0.15)',
+                selectionBorder: 'rgba(226, 88, 62, 0.8)',
+                textBg: 'rgba(253, 248, 245, 0.9)'
+            },
+            dark: {
+                bg: '#1c0e0a',
+                panel: '#2a1610',
+                border: '#4a261c',
+                text: '#ffebe6',
+                textMuted: '#fbb6a9',
+                primary: '#f47560',
+                primaryHover: '#e2583e',
+                primaryLight: '#781f0e',
+                stateBg: '#2a1610',
+                stateBorder: '#fbb6a9',
+                stateText: '#ffebe6',
+                selectedBg: '#781f0e',
+                selectedBorder: '#f47560',
+                activeBg: '#431407',
+                activeBorder: '#f97316',
+                activeText: '#ffedd5',
+                arrow: '#4a261c',
+                arrowHead: '#fbb6a9',
+                selectionBg: 'rgba(244, 117, 96, 0.15)',
+                selectionBorder: 'rgba(244, 117, 96, 0.8)',
+                textBg: 'rgba(28, 14, 10, 0.9)'
+            }
+        },
+        bondi: {
+            light: {
+                bg: '#f0f9fc',
+                panel: '#ffffff',
+                border: '#ccebf2',
+                text: '#054453',
+                textMuted: '#086b82',
+                primary: '#0095b6',
+                primaryHover: '#007691',
+                primaryLight: '#ecf9fc',
+                stateBg: '#ffffff',
+                stateBorder: '#086b82',
+                stateText: '#054453',
+                selectedBg: '#ecf9fc',
+                selectedBorder: '#0095b6',
+                activeBg: '#c5f2f7',
+                activeBorder: '#007691',
+                activeText: '#004d61',
+                arrow: '#086b82',
+                arrowHead: '#086b82',
+                selectionBg: 'rgba(0, 149, 182, 0.15)',
+                selectionBorder: 'rgba(0, 149, 182, 0.8)',
+                textBg: 'rgba(240, 249, 252, 0.9)'
+            },
+            dark: {
+                bg: '#041921',
+                panel: '#082631',
+                border: '#0f3e4f',
+                text: '#e0f7fa',
+                textMuted: '#80deea',
+                primary: '#26c6da',
+                primaryHover: '#0095b6',
+                primaryLight: '#054453',
+                stateBg: '#082631',
+                stateBorder: '#80deea',
+                stateText: '#e0f7fa',
+                selectedBg: '#054453',
+                selectedBorder: '#26c6da',
+                activeBg: '#00363a',
+                activeBorder: '#0095b6',
+                activeText: '#e0f7fa',
+                arrow: '#0f3e4f',
+                arrowHead: '#80deea',
+                selectionBg: 'rgba(38, 198, 218, 0.15)',
+                selectionBorder: 'rgba(38, 198, 218, 0.8)',
+                textBg: 'rgba(4, 25, 33, 0.9)'
+            }
+        },
+        lavender: {
+            light: {
+                bg: '#fcfbfe',
+                panel: '#ffffff',
+                border: '#e8e3f5',
+                text: '#3b1d5c',
+                textMuted: '#6d459c',
+                primary: '#8b5cf6',
+                primaryHover: '#7c3aed',
+                primaryLight: '#f5f3ff',
+                stateBg: '#ffffff',
+                stateBorder: '#6d459c',
+                stateText: '#3b1d5c',
+                selectedBg: '#f5f3ff',
+                selectedBorder: '#8b5cf6',
+                activeBg: '#eddffa',
+                activeBorder: '#7c3aed',
+                activeText: '#6d28d9',
+                arrow: '#6d459c',
+                arrowHead: '#6d459c',
+                selectionBg: 'rgba(139, 92, 246, 0.15)',
+                selectionBorder: 'rgba(139, 92, 246, 0.8)',
+                textBg: 'rgba(252, 251, 254, 0.9)'
+            },
+            dark: {
+                bg: '#12091f',
+                panel: '#1a0f2b',
+                border: '#381e5c',
+                text: '#f5f3ff',
+                textMuted: '#c084fc',
+                primary: '#a78bfa',
+                primaryHover: '#8b5cf6',
+                primaryLight: '#2e1065',
+                stateBg: '#1a0f2b',
+                stateBorder: '#c084fc',
+                stateText: '#f5f3ff',
+                selectedBg: '#2e1065',
+                selectedBorder: '#a78bfa',
+                activeBg: '#210b38',
+                activeBorder: '#8b5cf6',
+                activeText: '#ebd5ff',
+                arrow: '#381e5c',
+                arrowHead: '#c084fc',
+                selectionBg: 'rgba(167, 139, 250, 0.15)',
+                selectionBorder: 'rgba(167, 139, 250, 0.8)',
+                textBg: 'rgba(18, 9, 31, 0.9)'
+            }
+        }
+    };
+
+    let currentPalette = 'default';
+
+    function getCurrentColors() {
+        const theme = isDarkMode() ? 'dark' : 'light';
+        return themePalettes[currentPalette][theme];
+    }
+
+    function setPalette(paletteName) {
+        currentPalette = paletteName;
+        localStorage.setItem('active-palette', paletteName);
+        
+        // Update HTML classes
+        const htmlEl = document.documentElement;
+        htmlEl.classList.forEach(className => {
+            if (className.startsWith('palette-')) {
+                htmlEl.classList.remove(className);
+            }
+        });
+        if (paletteName !== 'default') {
+            htmlEl.classList.add(`palette-${paletteName}`);
+        }
+        
+        // Refresh canvas and transition table
+        if (typeof draw === 'function') draw();
+        if (typeof generateTransitionTable === 'function') generateTransitionTable();
+        
+        // Update selection state visual in modal options
+        document.querySelectorAll('.palette-option-btn').forEach(btn => {
+            const checkIcon = btn.querySelector('.check-icon');
+            if (btn.dataset.palette === paletteName) {
+                btn.classList.add('border-brand-500', 'ring-2', 'ring-brand-500/30');
+                if (checkIcon) checkIcon.classList.remove('hidden');
+            } else {
+                btn.classList.remove('border-brand-500', 'ring-2', 'ring-brand-500/30');
+                if (checkIcon) checkIcon.classList.add('hidden');
+            }
+        });
+    }
+
     // --- Variables and Core Structures ---
     class AutomatonState {
         constructor(id, x, y) {
@@ -596,8 +1110,9 @@
         tempCanvas.height = canvas.height;
         const tCtx = tempCanvas.getContext('2d');
         
-        // Fill background based on theme
-        tCtx.fillStyle = isDarkMode() ? '#0f172a' : '#f8fafc'; 
+        // Fill background based on active palette
+        const colors = getCurrentColors();
+        tCtx.fillStyle = colors.bg; 
         tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
         
         // Draw the current canvas over it
@@ -632,15 +1147,16 @@
         clone.style.width = '800px';  // Fixed width for good formatting
         clone.style.height = 'auto';  // Let it grow vertically
         clone.style.overflow = 'visible'; // NO scroll
-        clone.style.background = isDarkMode() ? '#1e293b' : '#ffffff';
-        clone.style.color = isDarkMode() ? '#e2e8f0' : '#1e293b';
+        const colors = getCurrentColors();
+        clone.style.background = colors.panel;
+        clone.style.color = colors.text;
         clone.style.padding = '20px';
         
         document.body.appendChild(clone);
         
         // Use html2canvas on the unconstrained clone
         html2canvas(clone, {
-            backgroundColor: isDarkMode() ? '#1e293b' : '#ffffff',
+            backgroundColor: colors.panel,
             scale: 2 // High resolution
         }).then(canvasOutput => {
             const a = document.createElement('a');
@@ -668,7 +1184,8 @@
         ctx.lineTo(-10, -5);
         ctx.lineTo(-10, 5);
         ctx.closePath();
-        ctx.fillStyle = isDarkMode() ? '#94a3b8' : '#334155';
+        const colors = getCurrentColors();
+        ctx.fillStyle = colors.arrowHead;
         ctx.fill();
         ctx.restore();
     }
@@ -680,11 +1197,11 @@
         const loopRadius = 22;
         const centerX = state.x;
         const centerY = state.y - r - loopRadius + 8;
-        const dark = isDarkMode();
+        const colors = getCurrentColors();
         
         ctx.beginPath();
         ctx.arc(centerX, centerY, loopRadius, 0, 2*Math.PI);
-        ctx.strokeStyle = dark ? '#64748b' : '#64748b';
+        ctx.strokeStyle = colors.arrow;
         ctx.lineWidth = 2;
         ctx.stroke();
         
@@ -699,14 +1216,14 @@
         ctx.textBaseline = 'bottom';
         
         const metrics = ctx.measureText(textStr);
-        ctx.fillStyle = dark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255,255,255,0.85)';
+        ctx.fillStyle = colors.textBg;
         
         const finalTx = centerX;
         const finalTy = centerY - loopRadius - 2;
         t.textPos = {x: finalTx, y: finalTy - 8}; 
 
         ctx.fillRect(finalTx - metrics.width/2 - 2, finalTy - 16, metrics.width + 4, 18);
-        ctx.fillStyle = dark ? '#e2e8f0' : '#1e293b';
+        ctx.fillStyle = colors.text;
         ctx.fillText(textStr, finalTx, finalTy);
     }
 
@@ -758,8 +1275,8 @@
             ctx.lineTo(endX, endY);
         }
         
-        const dark = isDarkMode();
-        ctx.strokeStyle = dark ? '#64748b' : '#64748b';
+        const colors = getCurrentColors();
+        ctx.strokeStyle = colors.arrow;
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -788,29 +1305,29 @@
         t.textPos = {x: finalTx, y: finalTy}; 
 
         const metrics = ctx.measureText(textStr);
-        ctx.fillStyle = dark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(248, 250, 252, 0.9)'; 
+        ctx.fillStyle = colors.textBg; 
         ctx.fillRect(finalTx - metrics.width/2 - 4, finalTy - 10, metrics.width + 8, 20);
         
-        ctx.fillStyle = dark ? '#e2e8f0' : '#1e293b';
+        ctx.fillStyle = colors.text;
         ctx.fillText(textStr, finalTx, finalTy);
     }
 
     function drawState(state) {
-        const dark = isDarkMode();
+        const colors = getCurrentColors();
         const isSimActive = isSimulating && simActiveStates.has(state);
         
         ctx.beginPath();
         ctx.arc(state.x, state.y, state.radius, 0, 2*Math.PI);
         
         if (isSimActive) {
-            ctx.fillStyle = dark ? '#064e3b' : '#bbf7d0'; 
-            ctx.strokeStyle = dark ? '#34d399' : '#166534'; 
+            ctx.fillStyle = colors.activeBg; 
+            ctx.strokeStyle = colors.activeBorder; 
         } else if (selectedStates.includes(state)) {
-            ctx.fillStyle = dark ? '#1e3a8a' : '#eff6ff'; 
-            ctx.strokeStyle = dark ? '#60a5fa' : '#2563eb'; 
+            ctx.fillStyle = colors.selectedBg; 
+            ctx.strokeStyle = colors.selectedBorder; 
         } else {
-            ctx.fillStyle = dark ? '#1e293b' : '#ffffff';
-            ctx.strokeStyle = dark ? '#94a3b8' : '#334155'; 
+            ctx.fillStyle = colors.stateBg;
+            ctx.strokeStyle = colors.stateBorder; 
         }
         
         ctx.lineWidth = selectedStates.includes(state) || isSimActive ? 3 : 2;
@@ -831,14 +1348,24 @@
             ctx.beginPath();
             ctx.moveTo(startX, startY);
             ctx.lineTo(endX, startY);
-            ctx.strokeStyle = dark ? '#94a3b8' : '#334155';
+            ctx.strokeStyle = colors.arrow;
             ctx.lineWidth = 2;
             ctx.stroke();
             drawArrowHead(endX, startY, 0);
         }
 
-        ctx.fillStyle = isSimActive ? (dark ? '#a7f3d0' : '#166534') : (dark ? '#f8fafc' : '#0f172a');
-        ctx.font = '600 14px Inter';
+        ctx.fillStyle = isSimActive ? colors.activeText : colors.stateText;
+        
+        // Dynamically shrink font size for long labels to avoid canvas circle overflow
+        let fontSize = 14;
+        ctx.font = `600 ${fontSize}px Inter`;
+        let textWidth = ctx.measureText(state.label).width;
+        let maxAllowedWidth = state.radius * 1.7; // ~48px
+        if (textWidth > maxAllowedWidth) {
+            fontSize = Math.max(8, Math.floor(fontSize * (maxAllowedWidth / textWidth)));
+            ctx.font = `600 ${fontSize}px Inter`;
+        }
+        
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(state.label, state.x, state.y);
@@ -847,6 +1374,7 @@
     function draw() {
         const rect = container.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
+        const colors = getCurrentColors();
         
         // Reset transform to clear the entire canvas
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -868,7 +1396,7 @@
             ctx.beginPath();
             ctx.moveTo(transitionStartNode.x, transitionStartNode.y);
             ctx.lineTo(currentMousePos.x, currentMousePos.y);
-            ctx.strokeStyle = isDarkMode() ? '#64748b' : '#94a3b8'; 
+            ctx.strokeStyle = colors.arrow; 
             ctx.setLineDash([5, 5]);
             ctx.lineWidth = 2;
             ctx.stroke();
@@ -881,8 +1409,8 @@
 
         // Draw Selection Box
         if (selectionBox.active) {
-            ctx.fillStyle = isDarkMode() ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)';
-            ctx.strokeStyle = isDarkMode() ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 0.8)';
+            ctx.fillStyle = colors.selectionBg;
+            ctx.strokeStyle = colors.selectionBorder;
             ctx.lineWidth = 1 / transform.scale; 
             ctx.setLineDash([5 / transform.scale, 5 / transform.scale]);
             let x = Math.min(selectionBox.startX, selectionBox.endX);
@@ -1248,12 +1776,12 @@
         }
 
         if (states.length === 0) {
-            document.getElementById('tableContent').innerHTML = `<p class="text-center text-slate-500 py-4 italic text-sm">Agrega estados y transiciones para ver la tabla.</p>`;
+            document.getElementById('tableContent').innerHTML = `<p class="text-center text-textmuted py-4 italic text-sm">Agrega estados y transiciones para ver la tabla.</p>`;
             return;
         }
 
-        let html = `<table class="w-full text-sm text-left text-slate-600 dark:text-slate-300">
-            <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+        let html = `<table class="w-full text-sm text-left text-textmain">
+            <thead class="text-xs uppercase bg-appbg text-textmain border-b border-appborder">
                 <tr>
                     <th scope="col" class="px-6 py-3 rounded-tl-lg">Estado</th>`;
         alphabetArr.forEach(sym => {
@@ -1266,12 +1794,12 @@
             if (s.isInitial) stateLabel = '→ ' + stateLabel;
             if (s.isFinal) stateLabel = '*' + stateLabel;
 
-            html += `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                <th scope="row" class="px-6 py-4 font-bold text-slate-900 dark:text-white whitespace-nowrap border-r dark:border-slate-700">${stateLabel}</th>`;
+            html += `<tr class="bg-panelbg border-b border-appborder hover:bg-appbg/50">
+                <th scope="row" class="px-6 py-4 font-bold text-textmain whitespace-nowrap border-r border-appborder">${stateLabel}</th>`;
             
             alphabetArr.forEach(sym => {
                 let targets = transitions.filter(t => t.from === s && t.symbols.includes(sym)).map(t => t.to.label);
-                let targetStr = targets.length > 0 ? (targets.length > 1 ? `{ ${targets.join(', ')} }` : targets[0]) : '<span class="text-slate-300 dark:text-slate-600">∅</span>';
+                let targetStr = targets.length > 0 ? (targets.length > 1 ? `{ ${targets.join(', ')} }` : targets[0]) : '<span class="text-textmuted opacity-50">∅</span>';
                 html += `<td class="px-6 py-4">${targetStr}</td>`;
             });
             html += `</tr>`;
@@ -1351,7 +1879,7 @@
                 previousState = currentState;
             } else {
                 currentSymbols = parts[i].split(/[.,]/).map(s => s.trim()).filter(s => s !== '');
-                currentSymbols = currentSymbols.map(s => s === 'e' || s === 'E' ? 'ε' : s);
+            currentSymbols = currentSymbols.map(s => s === 'e' || s === 'E' ? 'ε' : s);
             }
         }
         
@@ -1359,28 +1887,392 @@
         transform = { scale: 1, offsetX: 0, offsetY: 0 }; 
         updatePropsPanel();
         
-        runAutoLayout(50);
+        runAutoLayout(50, 0);
         
         showToast("Autómata cargado exitosamente", "success");
         if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
     });
 
-    // --- Auto Layout (Force Directed) ---
+    // --- Regular Expression Parser (Thompson's Construction) ---
+    function insertConcat(regex) {
+        let output = '';
+        for (let i = 0; i < regex.length; i++) {
+            let c1 = regex[i];
+            output += c1;
+            if (i + 1 < regex.length) {
+                let c2 = regex[i+1];
+                let isC1LiteralOrStarOrClose = /[a-zA-Z0-9ε]/.test(c1) || c1 === '*' || c1 === '+' || c1 === ')';
+                let isC2LiteralOrOpen = /[a-zA-Z0-9ε]/.test(c2) || c2 === '(';
+                if (isC1LiteralOrStarOrClose && isC2LiteralOrOpen) {
+                    output += '.'; // concat operator
+                }
+            }
+        }
+        return output;
+    }
+
+    function regexToPostfix(regex) {
+        let formatted = insertConcat(regex);
+        let output = '';
+        let stack = [];
+        
+        const precedence = {
+            '*': 3,
+            '+': 3,
+            '.': 2,
+            '|': 1
+        };
+        
+        for (let i = 0; i < formatted.length; i++) {
+            let c = formatted[i];
+            if (/[a-zA-Z0-9ε]/.test(c)) {
+                output += c;
+            } else if (c === '(') {
+                stack.push(c);
+            } else if (c === ')') {
+                while (stack.length > 0 && stack[stack.length - 1] !== '(') {
+                    output += stack.pop();
+                }
+                stack.pop();
+            } else {
+                while (stack.length > 0 && stack[stack.length - 1] !== '(' && precedence[stack[stack.length - 1]] >= precedence[c]) {
+                    output += stack.pop();
+                }
+                stack.push(c);
+            }
+        }
+        while (stack.length > 0) {
+            output += stack.pop();
+        }
+        return output;
+    }
+
+    function regexToNFA(regexStr) {
+        let cleanRegex = regexStr.replace(/\s+/g, '');
+        if (cleanRegex === '') return null;
+        
+        let postfix = regexToPostfix(cleanRegex);
+        
+        let stack = [];
+        let stateCounter = 0;
+        
+        function createState() {
+            return {
+                id: stateCounter++,
+                isInitial: false,
+                isFinal: false
+            };
+        }
+        
+        for (let i = 0; i < postfix.length; i++) {
+            let c = postfix[i];
+            if (/[a-zA-Z0-9ε]/.test(c)) {
+                let start = createState();
+                let end = createState();
+                let transitionsList = [{
+                    from: start.id,
+                    to: end.id,
+                    symbols: [c === 'e' || c === 'E' || c === 'ε' ? 'ε' : c]
+                }];
+                stack.push({
+                    start: start,
+                    end: end,
+                    states: [start, end],
+                    transitions: transitionsList
+                });
+            } else if (c === '.') {
+                if (stack.length < 2) throw new Error("Expresión regular inválida (Falta operando para concatenación)");
+                let nfa2 = stack.pop();
+                let nfa1 = stack.pop();
+                
+                nfa1.transitions.push({
+                    from: nfa1.end.id,
+                    to: nfa2.start.id,
+                    symbols: ['ε']
+                });
+                
+                stack.push({
+                    start: nfa1.start,
+                    end: nfa2.end,
+                    states: [...nfa1.states, ...nfa2.states],
+                    transitions: [...nfa1.transitions, ...nfa2.transitions]
+                });
+            } else if (c === '|') {
+                if (stack.length < 2) throw new Error("Expresión regular inválida (Falta operando para unión)");
+                let nfa2 = stack.pop();
+                let nfa1 = stack.pop();
+                
+                let start = createState();
+                let end = createState();
+                
+                let newTransitions = [
+                    { from: start.id, to: nfa1.start.id, symbols: ['ε'] },
+                    { from: start.id, to: nfa2.start.id, symbols: ['ε'] },
+                    { from: nfa1.end.id, to: end.id, symbols: ['ε'] },
+                    { from: nfa2.end.id, to: end.id, symbols: ['ε'] }
+                ];
+                
+                stack.push({
+                    start: start,
+                    end: end,
+                    states: [start, end, ...nfa1.states, ...nfa2.states],
+                    transitions: [...newTransitions, ...nfa1.transitions, ...nfa2.transitions]
+                });
+            } else if (c === '*') {
+                if (stack.length < 1) throw new Error("Expresión regular inválida (Falta operando para cerradura de Kleene)");
+                let nfa = stack.pop();
+                
+                let start = createState();
+                let end = createState();
+                
+                let newTransitions = [
+                    { from: start.id, to: nfa.start.id, symbols: ['ε'] },
+                    { from: start.id, to: end.id, symbols: ['ε'] },
+                    { from: nfa.end.id, to: nfa.start.id, symbols: ['ε'] },
+                    { from: nfa.end.id, to: end.id, symbols: ['ε'] }
+                ];
+                
+                stack.push({
+                    start: start,
+                    end: end,
+                    states: [start, end, ...nfa.states],
+                    transitions: [...newTransitions, ...nfa.transitions]
+                });
+            } else if (c === '+') {
+                if (stack.length < 1) throw new Error("Expresión regular inválida (Falta operando para cerradura positiva)");
+                let nfa = stack.pop();
+                
+                let start = createState();
+                let end = createState();
+                
+                let newTransitions = [
+                    { from: start.id, to: nfa.start.id, symbols: ['ε'] },
+                    { from: nfa.end.id, to: nfa.start.id, symbols: ['ε'] },
+                    { from: nfa.end.id, to: end.id, symbols: ['ε'] }
+                ];
+                
+                stack.push({
+                    start: start,
+                    end: end,
+                    states: [start, end, ...nfa.states],
+                    transitions: [...newTransitions, ...nfa.transitions]
+                });
+            }
+        }
+        
+        if (stack.length !== 1) throw new Error("Expresión regular con operadores desequilibrados");
+        return stack.pop();
+    }
+
+    document.getElementById('btnRegexLoad').addEventListener('click', () => {
+        const regexStr = document.getElementById('regexInput').value.trim();
+        if (!regexStr) {
+            showToast("Ingresa una expresión regular válida", "error");
+            return;
+        }
+
+        try {
+            saveHistoryState();
+            
+            const nfa = regexToNFA(regexStr);
+            if (!nfa) return;
+
+            states = [];
+            transitions = [];
+            nextStateId = 0;
+
+            const rect = container.getBoundingClientRect();
+            let cWidth = rect.width || 800;
+            let cHeight = rect.height || 600;
+            
+            let stateMap = {};
+            nfa.states.forEach(ts => {
+                let ns = new AutomatonState(ts.id, cWidth/2 + (Math.random()-0.5)*150, cHeight/2 + (Math.random()-0.5)*150);
+                ns.isInitial = (ts.id === nfa.start.id);
+                ns.isFinal = (ts.id === nfa.end.id);
+                stateMap[ts.id] = ns;
+                states.push(ns);
+            });
+
+            let groupedTrans = {};
+            nfa.transitions.forEach(t => {
+                let key = `${t.from}-${t.to}`;
+                if (!groupedTrans[key]) groupedTrans[key] = [];
+                t.symbols.forEach(sym => {
+                    if (!groupedTrans[key].includes(sym)) groupedTrans[key].push(sym);
+                });
+            });
+
+            for (let key in groupedTrans) {
+                let [fromId, toId] = key.split('-').map(Number);
+                let fromState = stateMap[fromId];
+                let toState = stateMap[toId];
+                if (fromState && toState) {
+                    transitions.push(new AutomatonTransition(fromState, toState, groupedTrans[key]));
+                }
+            }
+
+            // Normalise IDs sequentially
+            states.forEach((s, idx) => {
+                s.id = idx;
+                s.label = `q${idx}`;
+            });
+            nextStateId = states.length;
+
+            transform = { scale: 1, offsetX: 0, offsetY: 0 }; 
+            updatePropsPanel();
+            draw();
+            showToast("NFA generado con éxito (Thompson)", "success");
+            
+            runAutoLayout(150, 0);
+
+            if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+        } catch (err) {
+            showToast("Error en Regex: " + err.message, "error");
+        }
+    });
+
+    // --- Auto Layout Managers ---
+    let currentLayoutMode = 0; // 0: Organic, 1: Circular, 2: Hierarchical
+
     document.getElementById('btnAutoLayout').addEventListener('click', () => {
         saveHistoryState();
         runAutoLayout(150);
     });
 
-    function runAutoLayout(iterations) {
-        if(states.length <= 1) return;
+    function runAutoLayout(iterations, forceMode = null) {
+        if (states.length <= 1) return;
         
         const rect = container.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
-        const area = width * height;
-        const k = Math.sqrt(area / states.length) * 0.4; 
-        let temperature = width / 10;
         
+        let mode = forceMode !== null ? forceMode : currentLayoutMode;
+        
+        if (mode === 0) {
+            runOrganicLayout(iterations, width, height);
+            if (forceMode === null) currentLayoutMode = 1;
+        } else if (mode === 1) {
+            const targets = getCircularPositions(width, height);
+            animateToPositions(targets, 600, "Circular");
+            if (forceMode === null) currentLayoutMode = 2;
+        } else {
+            const targets = getHierarchicalPositions(width, height);
+            animateToPositions(targets, 600, "Jerárquico");
+            if (forceMode === null) currentLayoutMode = 0;
+        }
+    }
+
+    function animateToPositions(targetPositions, duration = 600, layoutName = "") {
+        const startPositions = states.map(s => ({id: s.id, x: s.x, y: s.y}));
+        const startTime = performance.now();
+        
+        function animateStep(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            // Ease in out quadratic
+            const t = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+            
+            states.forEach((s, idx) => {
+                const start = startPositions[idx];
+                const target = targetPositions.find(p => p.id === s.id) || start;
+                s.x = start.x + (target.x - start.x) * t;
+                s.y = start.y + (target.y - start.y) * t;
+            });
+            
+            draw();
+            if (progress < 1) {
+                requestAnimationFrame(animateStep);
+            } else {
+                showToast(`Diseño ${layoutName} aplicado`, "info");
+            }
+        }
+        requestAnimationFrame(animateStep);
+    }
+
+    function getCircularPositions(width, height) {
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(centerX, centerY) * 0.6;
+        
+        return states.map((s, idx) => {
+            const angle = (idx / states.length) * 2 * Math.PI - Math.PI / 2;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            return { id: s.id, x, y };
+        });
+    }
+
+    function getHierarchicalPositions(width, height) {
+        const initialStates = states.filter(s => s.isInitial);
+        const visited = new Set();
+        const ranks = {};
+        
+        if (initialStates.length === 0) {
+            states.forEach((s, idx) => {
+                ranks[s.id] = idx % 3;
+            });
+        } else {
+            let queue = initialStates.map(s => ({state: s, depth: 0}));
+            initialStates.forEach(s => {
+                ranks[s.id] = 0;
+                visited.add(s.id);
+            });
+            
+            while (queue.length > 0) {
+                const {state, depth} = queue.shift();
+                transitions.forEach(t => {
+                    if (t.from.id === state.id && !visited.has(t.to.id)) {
+                        ranks[t.to.id] = depth + 1;
+                        visited.add(t.to.id);
+                        queue.push({state: t.to, depth: depth + 1});
+                    }
+                });
+            }
+            states.forEach(s => {
+                if (ranks[s.id] === undefined) {
+                    ranks[s.id] = 0;
+                }
+            });
+        }
+        
+        const rankGroups = {};
+        states.forEach(s => {
+            const r = ranks[s.id];
+            if (!rankGroups[r]) rankGroups[r] = [];
+            rankGroups[r].push(s);
+        });
+        
+        const rankKeys = Object.keys(rankGroups).map(Number).sort((a,b)=>a-b);
+        const numRanks = rankKeys.length;
+        
+        const targetPositions = [];
+        rankKeys.forEach((rank, colIdx) => {
+            const colStates = rankGroups[rank];
+            const numInCol = colStates.length;
+            
+            const x = width * 0.15 + (width * 0.7 * (colIdx / Math.max(1, numRanks - 1)));
+            colStates.forEach((s, rowIdx) => {
+                const y = height * 0.2 + (height * 0.6 * ((rowIdx + 0.5) / numInCol));
+                targetPositions.push({id: s.id, x, y});
+            });
+        });
+        return targetPositions;
+    }
+
+    function runOrganicLayout(iterations, width, height) {
+        // Perturb slightly for variety
+        states.forEach(s => {
+            s.x += (Math.random() - 0.5) * 40;
+            s.y += (Math.random() - 0.5) * 40;
+        });
+
+        const area = width * height;
+        const k = Math.sqrt(area / states.length) * 0.45; 
+        let temperature = width / 12;
+        
+        let velocities = new Map();
+        states.forEach(s => velocities.set(s, {x: 0, y: 0}));
+
         function step() {
             let disp = new Map();
             states.forEach(s => disp.set(s, {x:0, y:0}));
@@ -1414,7 +2306,7 @@
                 let dx = (width/2) - v.x;
                 let dy = (height/2) - v.y;
                 let dist = Math.sqrt(dx*dx + dy*dy) || 0.1;
-                let force = dist / k; 
+                let force = dist / k * 0.5; 
                 disp.get(v).x += (dx/dist) * force;
                 disp.get(v).y += (dy/dist) * force;
             });
@@ -1422,25 +2314,266 @@
             states.forEach(v => {
                 let d = disp.get(v);
                 let dist = Math.sqrt(d.x*d.x + d.y*d.y) || 0.1;
-                v.x += (d.x/dist) * Math.min(dist, temperature);
-                v.y += (d.y/dist) * Math.min(dist, temperature);
                 
-                v.x = Math.max(v.radius, Math.min(width - v.radius, v.x));
-                v.y = Math.max(v.radius, Math.min(height - v.radius, v.y));
+                let stepX = (d.x/dist) * Math.min(dist, temperature);
+                let stepY = (d.y/dist) * Math.min(dist, temperature);
+                
+                let vel = velocities.get(v);
+                vel.x = vel.x * 0.55 + stepX * 0.45;
+                vel.y = vel.y * 0.55 + stepY * 0.45;
+                
+                v.x += vel.x;
+                v.y += vel.y;
+                
+                v.x = Math.max(v.radius + 10, Math.min(width - v.radius - 10, v.x));
+                v.y = Math.max(v.radius + 10, Math.min(height - v.radius - 10, v.y));
             });
 
-            temperature *= 0.95;
+            temperature *= 0.97;
             iterations--;
             draw();
 
-            if(iterations > 0) requestAnimationFrame(step);
-            else showToast("Reorganización completada", "info");
+            if(iterations > 0 && temperature > 0.1) {
+                requestAnimationFrame(step);
+            } else {
+                showToast("Diseño Orgánico aplicado", "info");
+            }
         }
         requestAnimationFrame(step);
     }
 
-    // --- Determinization ---
+    // --- Determinization & Minimization ---
     document.getElementById('btnDeterminize').addEventListener('click', determinizeNFA);
+    document.getElementById('btnMinimize').addEventListener('click', minimizeDFA);
+
+    function minimizeDFA() {
+        if (states.length === 0) {
+            showToast("No hay estados para minimizar.", "warning");
+            return;
+        }
+
+        // Check if it's an NFA
+        let isNFA = false;
+        let initialStates = states.filter(s => s.isInitial);
+        if (initialStates.length > 1) isNFA = true;
+
+        // Check if any state has epsilon transitions or multiple transitions on same symbol
+        for (let s of states) {
+            let symbolTargets = {};
+            for (let t of transitions) {
+                if (t.from === s) {
+                    for (let sym of t.symbols) {
+                        if (sym === 'ε') {
+                            isNFA = true;
+                            break;
+                        }
+                        if (!symbolTargets[sym]) symbolTargets[sym] = new Set();
+                        symbolTargets[sym].add(t.to);
+                        if (symbolTargets[sym].size > 1) {
+                            isNFA = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isNFA) break;
+        }
+
+        if (isNFA) {
+            showToast("El autómata es un NFA. Determinizando primero...", "info");
+            determinizeNFA(); // This updates states, transitions, nextStateId, etc.
+        }
+
+        // Now we definitely have a DFA. Let's minimize it!
+        // 1. Remove unreachable states
+        let reachable = new Set();
+        let initStates = states.filter(s => s.isInitial);
+        if (initStates.length === 0) {
+            showToast("Se requiere un estado inicial para minimizar.", "error");
+            return;
+        }
+        
+        let queue = [...initStates];
+        initStates.forEach(s => reachable.add(s));
+        while(queue.length > 0) {
+            let curr = queue.shift();
+            transitions.forEach(t => {
+                if (t.from === curr && !reachable.has(t.to)) {
+                    reachable.add(t.to);
+                    queue.push(t.to);
+                }
+            });
+        }
+        
+        // Filter states to only reachable ones
+        let dfaStates = states.filter(s => reachable.has(s));
+        
+        // Alphabet
+        let alphabet = new Set();
+        transitions.forEach(t => {
+            if (reachable.has(t.from)) {
+                t.symbols.forEach(sym => {
+                    if (sym !== 'ε') alphabet.add(sym);
+                });
+            }
+        });
+        let alphabetArr = Array.from(alphabet);
+
+        // Partition 0: Final and Non-Final states
+        let finalStates = dfaStates.filter(s => s.isFinal);
+        let nonFinalStates = dfaStates.filter(s => !s.isFinal);
+        
+        let partitions = [];
+        if (finalStates.length > 0) partitions.push(new Set(finalStates));
+        if (nonFinalStates.length > 0) partitions.push(new Set(nonFinalStates));
+
+        if (partitions.length === 0) return;
+
+        // Iterative refinement (Moore's algorithm)
+        let changed = true;
+        while(changed) {
+            changed = false;
+            let newPartitions = [];
+            
+            for (let part of partitions) {
+                if (part.size <= 1) {
+                    newPartitions.push(part);
+                    continue;
+                }
+                
+                // Group states in this partition by their transition behaviors
+                let subGroups = [];
+                
+                for (let state of part) {
+                    // Find which group this state goes to for each symbol
+                    let signature = {};
+                    alphabetArr.forEach(sym => {
+                        let target = null;
+                        let trans = transitions.find(t => t.from === state && t.symbols.includes(sym));
+                        if (trans) target = trans.to;
+                        
+                        let partIdx = -1;
+                        if (target !== null) {
+                            partIdx = partitions.findIndex(p => p.has(target));
+                        }
+                        signature[sym] = partIdx;
+                    });
+                    
+                    // Match with existing subGroups
+                    let matched = false;
+                    for (let group of subGroups) {
+                        let rep = group[0];
+                        let repSignature = rep._sig;
+                        
+                        let match = true;
+                        for (let sym of alphabetArr) {
+                            if (signature[sym] !== repSignature[sym]) {
+                                match = false;
+                                break;
+                            }
+                        }
+                        if (match) {
+                            state._sig = signature;
+                            group.push(state);
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        state._sig = signature;
+                        subGroups.push([state]);
+                    }
+                }
+                
+                subGroups.forEach(group => {
+                    newPartitions.push(new Set(group));
+                });
+                
+                if (subGroups.length > 1) {
+                    changed = true;
+                }
+            }
+            
+            partitions = newPartitions;
+        }
+
+        dfaStates.forEach(s => delete s._sig);
+
+        // Sort partitions so that the one containing the initial state is first (q0),
+        // and partitions containing final states are placed last (for numerical order).
+        partitions.sort((a, b) => {
+            let aHasInitial = Array.from(a).some(s => s.isInitial);
+            let bHasInitial = Array.from(b).some(s => s.isInitial);
+            if (aHasInitial && !bHasInitial) return -1;
+            if (!aHasInitial && bHasInitial) return 1;
+            
+            let aHasFinal = Array.from(a).some(s => s.isFinal);
+            let bHasFinal = Array.from(b).some(s => s.isFinal);
+            if (!aHasFinal && bHasFinal) return -1;
+            if (aHasFinal && !bHasFinal) return 1;
+            
+            return 0;
+        });
+
+        // 3. Construct minimized states
+        let newStates = [];
+        let newTransitions = [];
+        const rect = container.getBoundingClientRect();
+        let centerX = rect.width / 2;
+        let centerY = rect.height / 2;
+        let radius = Math.min(centerX, centerY) * 0.7;
+
+        partitions.forEach((set, i) => {
+            let angle = (i / partitions.length) * 2 * Math.PI - Math.PI/2; 
+            let x = centerX + radius * Math.cos(angle);
+            let y = centerY + radius * Math.sin(angle);
+            
+            let ns = new AutomatonState(i, x, y);
+            ns.label = `q${i}`;
+            
+            ns.isInitial = Array.from(set).some(s => s.isInitial);
+            ns.isFinal = Array.from(set).some(s => s.isFinal);
+            newStates.push(ns);
+        });
+
+        // 4. Construct transitions between partitions
+        let groupedTrans = {};
+        partitions.forEach((fromSet, fromIdx) => {
+            let repState = Array.from(fromSet)[0];
+            
+            alphabetArr.forEach(sym => {
+                let trans = transitions.find(t => t.from === repState && t.symbols.includes(sym));
+                if (trans) {
+                    let targetState = trans.to;
+                    let toIdx = partitions.findIndex(p => p.has(targetState));
+                    if (toIdx !== -1) {
+                        let key = `${fromIdx}-${toIdx}`;
+                        if (!groupedTrans[key]) groupedTrans[key] = [];
+                        if (!groupedTrans[key].includes(sym)) groupedTrans[key].push(sym);
+                    }
+                }
+            });
+        });
+
+        for (let key in groupedTrans) {
+            let [from, to] = key.split('-').map(Number);
+            newTransitions.push(new AutomatonTransition(newStates[from], newStates[to], groupedTrans[key]));
+        }
+
+        saveHistoryState();
+        states = newStates;
+        transitions = newTransitions;
+        nextStateId = newStates.length;
+        selectedStates = [];
+        transform = { scale: 1, offsetX: 0, offsetY: 0 };
+        updatePropsPanel();
+        draw();
+        showToast("DFA minimizado con éxito", "success");
+        if (!tableSidepanel.classList.contains('translate-x-full')) generateTransitionTable();
+        
+        // Autolayout the minimized DFA beautifully
+        runAutoLayout(100, 0);
+    }
 
     function determinizeNFA() {
         if (isSimulating) return;
@@ -1512,8 +2645,7 @@
             
             let ns = new AutomatonState(i, x, y);
             let oldLabels = Array.from(set).map(s => s.label).sort().join(',');
-            ns.label = `{${oldLabels}}`.substring(0, 12); 
-            if (ns.label.length === 12) ns.label += '...';
+            ns.label = `{${oldLabels}}`;
 
             if (i === 0) ns.isInitial = true;
             ns.isFinal = Array.from(set).some(s => s.isFinal);
@@ -1565,7 +2697,7 @@
 
     function updateUIForSimulation() {
         if (isSimulating) {
-            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = true);
+            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnMinimize, #btnRegexLoad, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = true);
             document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.add('opacity-50'));
             statePropsPanel.classList.add('hidden');
             simInput.classList.add('hidden');
@@ -1574,7 +2706,7 @@
             btnSimReset.classList.remove('hidden');
             btnSimFull.classList.add('hidden');
         } else {
-            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = false);
+            document.querySelectorAll('.tool-btn, #btnClearAll, #btnDeterminize, #btnMinimize, #btnRegexLoad, #btnTextLoad, #btnAutoLayout, #btnSaveJson, #btnLoadJson').forEach(btn => btn.disabled = false);
             document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('opacity-50'));
             if(selectedStates.length === 1) statePropsPanel.classList.remove('hidden');
             simInput.classList.remove('hidden');
@@ -1590,17 +2722,17 @@
         let html = '';
         for (let i = 0; i < simString.length; i++) {
             if (i === simIndex && simStatus === 'PLAYING') {
-                html += `<span class="bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded px-1">${simString[i]}</span>`;
+                html += `<span class="bg-brand-50 text-brand-600 rounded px-1 font-bold shadow-sm">${simString[i]}</span>`;
             } else if (i < simIndex) {
-                html += `<span class="text-slate-400 dark:text-slate-500">${simString[i]}</span>`;
+                html += `<span class="text-textmuted">${simString[i]}</span>`;
             } else {
                 html += `<span>${simString[i]}</span>`;
             }
         }
         if (simIndex === simString.length && simStatus === 'PLAYING') {
-            html += `<span class="bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded px-1 animate-pulse">_</span>`;
+            html += `<span class="bg-brand-50 text-brand-600 rounded px-1 animate-pulse">_</span>`;
         }
-        simDisplay.innerHTML = html || '<span class="text-slate-400 italic text-sm">Cadena vacía (ε)</span>';
+        simDisplay.innerHTML = html || '<span class="text-textmuted italic text-sm">Cadena vacía (ε)</span>';
     }
 
     function startSimulation() {
@@ -1649,8 +2781,8 @@
             const bgClass = accepted ? 'bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/40' : 'bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40';
             const displayStr = simString === "" ? "ε (vacía)" : simString;
             
-            li.className = `p-2 rounded border border-slate-100 dark:border-slate-700 cursor-pointer transition-colors flex justify-between items-center text-sm ${bgClass}`;
-            li.innerHTML = `<span class="truncate mr-2 font-mono dark:text-slate-200" title="${displayStr}">${displayStr}</span>
+            li.className = `p-2 rounded border border-appborder cursor-pointer transition-colors flex justify-between items-center text-sm ${bgClass}`;
+            li.innerHTML = `<span class="truncate mr-2 font-mono text-textmain" title="${displayStr}">${displayStr}</span>
                             <span class="font-bold text-xs uppercase ${colorClass}">${statusText}</span>`;
             
             li.dataset.log = JSON.stringify(currentSimLog);
@@ -1713,11 +2845,11 @@
         tbody.innerHTML = '';
         log.forEach((step, idx) => {
             const tr = document.createElement('tr');
-            tr.className = "bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50";
+            tr.className = "bg-panelbg border-b border-appborder hover:bg-appbg/50";
             tr.innerHTML = `
                 <td class="px-4 py-2 font-medium">${idx}</td>
-                <td class="px-4 py-2 text-center font-mono text-blue-600 dark:text-blue-400 bg-slate-50 dark:bg-slate-900/50">${step.symbol}</td>
-                <td class="px-4 py-2 font-mono ${step.states === '∅' ? 'text-red-400' : 'text-slate-800 dark:text-slate-200'}">${step.states}</td>
+                <td class="px-4 py-2 text-center font-mono text-brand-500 bg-appbg/50">${step.symbol}</td>
+                <td class="px-4 py-2 font-mono ${step.states === '∅' ? 'text-red-400' : 'text-textmain'}">${step.states}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -1749,14 +2881,59 @@
         saveHistoryState(); 
     }
 
+    // --- Palette Modal Event Listeners ---
+    const paletteModal = document.getElementById('paletteModal');
+    const btnPaletteSelect = document.getElementById('btnPaletteSelect');
+    const btnClosePaletteModal = document.getElementById('btnClosePaletteModal');
+    const btnApplyPalette = document.getElementById('btnApplyPalette');
+
+    btnPaletteSelect.addEventListener('click', () => {
+        const currentActive = localStorage.getItem('active-palette') || 'default';
+        document.querySelectorAll('.palette-option-btn').forEach(btn => {
+            const checkIcon = btn.querySelector('.check-icon');
+            if (btn.dataset.palette === currentActive) {
+                btn.classList.add('border-brand-500', 'ring-2', 'ring-brand-500/30');
+                if (checkIcon) checkIcon.classList.remove('hidden');
+            } else {
+                btn.classList.remove('border-brand-500', 'ring-2', 'ring-brand-500/30');
+                if (checkIcon) checkIcon.classList.add('hidden');
+            }
+        });
+        paletteModal.classList.remove('hidden');
+    });
+
+    btnClosePaletteModal.addEventListener('click', () => {
+        paletteModal.classList.add('hidden');
+    });
+
+    btnApplyPalette.addEventListener('click', () => {
+        paletteModal.classList.add('hidden');
+    });
+
+    paletteModal.addEventListener('click', (e) => {
+        if (e.target === paletteModal) {
+            paletteModal.classList.add('hidden');
+        }
+    });
+
+    document.querySelectorAll('.palette-option-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setPalette(this.dataset.palette);
+        });
+    });
+
     setTimeout(() => {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
+        // Load saved palette
+        const savedPalette = localStorage.getItem('active-palette') || 'default';
+        setPalette(savedPalette);
+
         resizeCanvas();
         loadExample();
         draw();
-        showToast("¡Archivo & Exportación añadidos!", "info");
+        showToast("¡Paleta de colores inicializada!", "info");
     }, 100);
 
 </script>
